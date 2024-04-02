@@ -14,9 +14,7 @@ public class FacturaDTO {
     private String idFactura;
     private Long numeroFactura;
     private Long monto;
-    private LocalDate fechaVencimientoDate;
-    private String fechaVencimientoString;
     private String enConvenio;
-    private String matriculado;
+    private String idMatriculado;
     private List<String> cuotaList;
 }

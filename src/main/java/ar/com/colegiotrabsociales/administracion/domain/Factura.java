@@ -32,12 +32,11 @@ public class Factura {
     @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Long monto;
 
-    private LocalDate fechaVencimiento;
-
     @Column(length = 5, columnDefinition = "varchar(5)", updatable = true, nullable = false)
     private boolean enConvenio;
 
     @ManyToOne
+    @JoinColumn(name = "matriculado_numero")
     private Matriculado matriculado;
 
     @OneToMany(mappedBy = "factura")

@@ -36,5 +36,10 @@ public class Cuota {
     private PagoEstado pagoEstado;
 
     @ManyToOne
+    @JoinColumn(name = "factura_numero")
     private Factura factura;
+
+    @ManyToOne
+    @JoinColumn(name = "matriculado_numero")
+    private Matriculado matriculado;
 }
