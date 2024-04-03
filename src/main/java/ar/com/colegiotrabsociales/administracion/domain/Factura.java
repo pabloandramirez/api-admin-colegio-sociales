@@ -29,9 +29,6 @@ public class Factura {
     @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Long numero;
 
-    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
-    private Long monto;
-
     @Column(length = 5, columnDefinition = "varchar(5)", updatable = true, nullable = false)
     private boolean enConvenio;
 

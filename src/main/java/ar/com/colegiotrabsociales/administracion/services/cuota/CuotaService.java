@@ -18,4 +18,7 @@ public interface CuotaService {
     //PUT
     Optional<CuotaDTO> actualizarCuota(UUID idCuota, CuotaDTO cuotaActualizada);
 
+    //DELETE
+    boolean borrarCuota(UUID idCuota);
+
 }

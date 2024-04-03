@@ -2,9 +2,13 @@ package ar.com.colegiotrabsociales.administracion.services.cuota.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Cuota;
+import ar.com.colegiotrabsociales.administracion.domain.Factura;
+import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.cuota.CuotaMapper;
 import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
 import ar.com.colegiotrabsociales.administracion.repository.cuota.CuotaRepository;
+import ar.com.colegiotrabsociales.administracion.repository.factura.FacturaRepository;
+import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import ar.com.colegiotrabsociales.administracion.services.cuota.CuotaService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +25,11 @@ public class CuotaServiceImpl implements CuotaService {
     private CuotaMapper cuotaMapper;
 
     private CuotaRepository cuotaRepository;
+
+    private FacturaRepository facturaRepository;
+
+    private MatriculadoRepository matriculadoRepository;
+
     @Override
     public Cuota crearCuota(CuotaDTO cuotaDTO) {
         Cuota cuota = cuotaMapper.cuotaDTOtoCuota(cuotaDTO);
@@ -41,18 +50,29 @@ public class CuotaServiceImpl implements CuotaService {
     public Optional<CuotaDTO> actualizarCuota(UUID idCuota, CuotaDTO cuotaActualizada) {
         Optional<Cuota> cuotaOptional = cuotaRepository.findById(idCuota);
         if (cuotaOptional.isPresent()){
-
+            actualizacionCuota(cuotaOptional.get(), cuotaActualizada);
+            cuotaRepository.saveAndFlush(cuotaOptional.get());
+            return Optional.of(cuotaMapper.cuotaToCuotaDTO(cuotaOptional.get()));
         }
         return Optional.empty();
     }
 
+    @Override
+    public boolean borrarCuota(UUID idCuota) {
+        if(cuotaRepository.existsById(idCuota)){
+            cuotaRepository.deleteById(idCuota);
+            return true;
+        }
+        return false;
+    }
+
     private void actualizacionCuota(Cuota cuota, CuotaDTO cuotaActualizada){
-        if (cuotaActualizada.getNumeroCuota() != null && cuotaActualizada.getNumeroCuota()>0){
-            cuota.setNumero(cuotaActualizada.getNumeroCuota());
+        if (cuotaActualizada.getNumeroCuota() != null && cuotaActualizada.getNumeroCuota().isBlank()){
+            cuota.setNumero(Long.valueOf(cuotaActualizada.getNumeroCuota()));
         }
 
-        if (cuotaActualizada.getMonto() != null && cuotaActualizada.getMonto()>0){
-            cuota.setMonto(cuotaActualizada.getMonto());
+        if (cuotaActualizada.getMonto() != null && cuotaActualizada.getMonto().isBlank()){
+            cuota.setMonto(Long.valueOf(cuotaActualizada.getMonto()));
         }
 
         if (cuotaActualizada.getFechaVencimientoString() != null && !cuotaActualizada.getFechaVencimientoString().isBlank()){
@@ -64,11 +84,13 @@ public class CuotaServiceImpl implements CuotaService {
         }
 
         if (cuotaActualizada.getIdFactura() != null && !cuotaActualizada.getIdFactura().isBlank()){
-            noticia.setFechaPublicacion(getLocalDate(noticiaActualizadaDTO.getFechaPublicacionString()));
+            Optional<Factura> facturaOptional = facturaRepository.findByNumero(Long.valueOf(cuotaActualizada.getIdFactura()));
+            facturaOptional.ifPresent(cuota::setFactura);
         }
 
-        if (noticiaActualizadaDTO.getFechaPublicacionString() != null && !noticiaActualizadaDTO.getFechaPublicacionString().isBlank()){
-            noticia.setFechaPublicacion(getLocalDate(noticiaActualizadaDTO.getFechaPublicacionString()));
+        if (cuotaActualizada.getIdMatriculado() != null && !cuotaActualizada.getIdMatriculado().isBlank()){
+            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(cuotaActualizada.getIdMatriculado()));
+            matriculadoOptional.ifPresent(cuota::setMatriculado);
         }
     }
 

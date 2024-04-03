@@ -12,8 +12,8 @@ import java.time.LocalDate;
 @Builder
 public class CuotaDTO {
     private String idCuota;
-    private Long numeroCuota;
-    private Long monto;
+    private String numeroCuota;
+    private String monto;
     private LocalDate fechaVencimientoDate;
     private String fechaVencimientoString;
     private String pagoEstado;

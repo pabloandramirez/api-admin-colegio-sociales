@@ -11,13 +11,12 @@ import java.util.List;
 @Builder
 public class MatriculadoDTO {
     private String idMatriculado;
-    private Long numeroMatricula;
+    private String numeroMatricula;
     private String nombres;
     private String apellido;
     private String dni;
-    private String caategoria;
+    private String categoria;
     private String becadoOMonotributista;
-    private List<String> facturas;
 }
 
 

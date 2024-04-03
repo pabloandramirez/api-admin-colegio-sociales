@@ -12,9 +12,7 @@ import java.util.List;
 @Builder
 public class FacturaDTO {
     private String idFactura;
-    private Long numeroFactura;
-    private Long monto;
+    private String numeroFactura;
     private String enConvenio;
-    private String idMatriculado;
-    private List<String> cuotaList;
+    private String numeroMatriculado;
 }
