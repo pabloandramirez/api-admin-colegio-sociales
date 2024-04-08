@@ -13,6 +13,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Setter
@@ -36,5 +37,5 @@ public class Usuario {
     @Column(nullable = false, updatable = true)
     private String password;
 
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles;
 }

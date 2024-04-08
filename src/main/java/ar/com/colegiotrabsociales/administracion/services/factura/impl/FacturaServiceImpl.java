@@ -1,23 +1,20 @@
 package ar.com.colegiotrabsociales.administracion.services.factura.impl;
 
-import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
-import ar.com.colegiotrabsociales.administracion.domain.Cuota;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
-import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.repository.factura.FacturaRepository;
 import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import ar.com.colegiotrabsociales.administracion.services.factura.FacturaService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class FacturaServiceImpl implements FacturaService {
 
     private FacturaMapper facturaMapper;
@@ -64,15 +61,15 @@ public class FacturaServiceImpl implements FacturaService {
 
     private void actualizacionFactura(Factura factura, FacturaDTO facturaActualizada){
         if (facturaActualizada.getNumeroFactura() != null && facturaActualizada.getNumeroFactura().isBlank()){
-            factura.setNumero(Long.valueOf(facturaActualizada.getNumeroFactura()));
+            factura.setNumero(Long.valueOf(facturaActualizada.getNumeroFactura().trim()));
         }
 
         if (facturaActualizada.getEnConvenio() != null && facturaActualizada.getEnConvenio().isBlank()){
-            factura.setEnConvenio(Boolean.getBoolean(facturaActualizada.getEnConvenio().toLowerCase()));
+            factura.setEnConvenio(Boolean.getBoolean(facturaActualizada.getEnConvenio().toLowerCase().trim()));
         }
 
         if (facturaActualizada.getNumeroMatriculado() != null && !facturaActualizada.getNumeroMatriculado().isBlank()){
-            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(facturaActualizada.getNumeroMatriculado()));
+            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(facturaActualizada.getNumeroMatriculado().trim()));
             matriculadoOptional.ifPresent(factura::setMatriculado);
         }
     }
