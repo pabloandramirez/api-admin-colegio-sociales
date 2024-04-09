@@ -1,6 +1,7 @@
 package ar.com.colegiotrabsociales.administracion.domain;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,8 +30,8 @@ public class Factura {
     @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Long numero;
 
-    @Column(length = 5, columnDefinition = "varchar(5)", updatable = true, nullable = false)
-    private boolean enConvenio;
+    @Column(updatable = true, nullable = false)
+    private Convenio enConvenio;
 
     @ManyToOne
     @JoinColumn(name = "matriculado_numero")

@@ -1,7 +1,9 @@
 package ar.com.colegiotrabsociales.administracion.services.factura.impl;
 
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
+import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.repository.factura.FacturaRepository;
@@ -24,9 +26,15 @@ public class FacturaServiceImpl implements FacturaService {
     private MatriculadoRepository matriculadoRepository;
 
     @Override
-    public Factura crearFactura(FacturaDTO facturaDTO) {
+    public Factura crearFactura(FacturaDTO facturaDTO) throws NotFoundException {
         Factura factura = facturaMapper.facturaDTOtoFactura(facturaDTO);
-        return facturaRepository.save(factura);
+        Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(facturaDTO.getNumeroMatriculado()));
+        if (matriculadoOptional.isPresent()){
+            factura.setMatriculado(matriculadoOptional.get());
+            return facturaRepository.save(factura);
+        } else {
+            throw new NotFoundException();
+        }
     }
 
     @Override
@@ -65,13 +73,25 @@ public class FacturaServiceImpl implements FacturaService {
         }
 
         if (facturaActualizada.getEnConvenio() != null && facturaActualizada.getEnConvenio().isBlank()){
-            factura.setEnConvenio(Boolean.getBoolean(facturaActualizada.getEnConvenio().toLowerCase().trim()));
+            factura.setEnConvenio(getConvenio(facturaActualizada.getEnConvenio()));
         }
 
         if (facturaActualizada.getNumeroMatriculado() != null && !facturaActualizada.getNumeroMatriculado().isBlank()){
             Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(facturaActualizada.getNumeroMatriculado().trim()));
             matriculadoOptional.ifPresent(factura::setMatriculado);
         }
+    }
+
+
+    private Convenio getConvenio(String convenioString){
+        if(!convenioString.isBlank()){
+            for (Convenio convenio: Convenio.values()) {
+                if (convenio.getConvenio().equalsIgnoreCase(convenioString)) {
+                    return convenio;
+                }
+            }
+        }
+        return null;
     }
 
 }

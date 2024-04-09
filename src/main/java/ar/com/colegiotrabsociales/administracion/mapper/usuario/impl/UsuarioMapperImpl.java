@@ -24,7 +24,7 @@ public class UsuarioMapperImpl implements UsuarioMapper {
                 .uuid(UUID.randomUUID())
                 .usuario(usuarioDTO.getUsuario())
                 .password(passwordEncoder.encode(usuarioDTO.getPassword()))
-                .roles(usuarioDTO.getRoles().stream().map(Role::valueOf).collect(Collectors.toSet()))
+                .roles(usuarioDTO.getRoles().stream().map(this::getRole).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -33,7 +33,22 @@ public class UsuarioMapperImpl implements UsuarioMapper {
         return UsuarioDTO
                 .builder()
                 .usuario(usuario.getUsuario())
-                .roles(usuario.getRoles().stream().map(Role::getRole).collect(Collectors.toSet()))
+                .roles(usuario.getRoles().stream().map(this::getRole).collect(Collectors.toSet()))
                 .build();
+    }
+
+    private Role getRole(String roleString){
+        if(!roleString.isBlank()){
+            for (Role role: Role.values()) {
+                if (role.getRole().equalsIgnoreCase(roleString)) {
+                    return role;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getRole(Role role){
+        return role.getRole();
     }
 }

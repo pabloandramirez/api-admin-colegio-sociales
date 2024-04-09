@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum PagoEstado {
-    PAGADO("pagado"),
-    PARCIAL("pago parcial"),
-    IMPAGO("impago");
+    PAGADO("PAGADO"),
+    PARCIAL("PAGO PARCIAL"),
+    IMPAGO("IMPAGO");
 
     private final String pagoEstado;
 

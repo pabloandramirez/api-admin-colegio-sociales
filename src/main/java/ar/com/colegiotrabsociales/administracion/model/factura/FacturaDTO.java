@@ -2,7 +2,6 @@ package ar.com.colegiotrabsociales.administracion.model.factura;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -15,4 +14,5 @@ public class FacturaDTO {
     private String numeroFactura;
     private String enConvenio;
     private String numeroMatriculado;
+    private List<String> cuotas;
 }

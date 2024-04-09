@@ -17,6 +17,6 @@ public class CuotaDTO {
     private LocalDate fechaVencimientoDate;
     private String fechaVencimientoString;
     private String pagoEstado;
-    private String idFactura;
-    private String idMatriculado;
+    private String numeroFactura;
+    private String numeroMatriculado;
 }
