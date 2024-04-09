@@ -1,6 +1,7 @@
 package ar.com.colegiotrabsociales.administracion.domain;
 
 
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,8 +42,8 @@ public class Matriculado {
     @Column(updatable = true, nullable = false)
     private Categoria categoria;
 
-    @Column(length = 20, columnDefinition = "varchar(20)", updatable = true, nullable = false)
-    private String becadoOMonotributista;
+    @Column(updatable = true, nullable = false)
+    private BecadoMonotributista becadoOMonotributista;
 
     @OneToMany(mappedBy = "matriculado")
     private List<Factura> facturas;

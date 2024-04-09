@@ -1,5 +1,6 @@
 package ar.com.colegiotrabsociales.administracion.mapper.matriculado.impl;
 
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Role;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
@@ -28,7 +29,6 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .apellido(matriculadoDTO.getApellido())
                 .numeroMatricula(Long.valueOf(matriculadoDTO.getNumeroMatricula()))
                 .categoria(getCategoria(matriculadoDTO.getCategoria()))
-                .becadoOMonotributista(matriculadoDTO.getBecadoOMonotributista())
                 .build();
     }
 
@@ -41,7 +41,7 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .apellido(matriculado.getApellido())
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
-                .becadoOMonotributista(matriculado.getBecadoOMonotributista())
+                .becadoOMonotributista(getBecadoMonotributista(matriculado.getBecadoOMonotributista()))
                 .facturas(matriculado.getFacturas().stream().map(factura ->
                         facturaMapper.facturaToFacturaDTO(factura).toString()).collect(Collectors.toList()))
                 .build();
@@ -60,5 +60,20 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
 
     private String getCategoria(Categoria categoria){
         return categoria.getCategoria();
+    }
+
+    private BecadoMonotributista getBecadoMonotributista(String becadoMonotributistaString){
+        if(!becadoMonotributistaString.isBlank()){
+            for (BecadoMonotributista becadoMonotributista: BecadoMonotributista.values()) {
+                if (becadoMonotributista.getBecadoMonotributista().equalsIgnoreCase(becadoMonotributistaString)) {
+                    return becadoMonotributista;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getBecadoMonotributista(BecadoMonotributista becadoMonotributista){
+        return becadoMonotributista.getBecadoMonotributista();
     }
 }

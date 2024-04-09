@@ -1,5 +1,6 @@
 package ar.com.colegiotrabsociales.administracion.services.matriculado.impl;
 
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
@@ -24,6 +25,9 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     @Override
     public Matriculado crearMatriculado(MatriculadoDTO matriculadoDTO) {
         Matriculado matriculado = matriculadoMapper.matriculadoDTOtoMatriculado(matriculadoDTO);
+        if (matriculado.getCategoria() == Categoria.B){
+            matriculado.setBecadoOMonotributista(BecadoMonotributista.valueOf(matriculadoDTO.getBecadoOMonotributista()));
+        }
         return matriculadoRepository.save(matriculado);
     }
 

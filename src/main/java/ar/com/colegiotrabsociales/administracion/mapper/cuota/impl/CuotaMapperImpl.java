@@ -31,6 +31,9 @@ public class CuotaMapperImpl implements CuotaMapper {
                 .monto(String.valueOf(cuota.getMonto()))
                 .fechaVencimientoDate(cuota.getFechaVencimiento())
                 .fechaVencimientoString(getLocalDate(cuota.getFechaVencimiento()))
+                .pagoEstado(getPagoEstado(cuota.getPagoEstado()))
+                .numeroFactura(String.valueOf(cuota.getFactura().getNumero()))
+                .numeroMatriculado(String.valueOf(cuota.getMatriculado().getNumeroMatricula()))
                 .build();
     }
 
