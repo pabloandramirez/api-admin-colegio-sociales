@@ -30,11 +30,8 @@ public class Matriculado {
     @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Long numeroMatricula;
 
-    @Column(length = 50, columnDefinition = "varchar(50)", updatable = true, nullable = false)
-    private String nombres;
-
-    @Column(length = 50, columnDefinition = "varchar(50)", updatable = true, nullable = false)
-    private String apellido;
+    @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = false)
+    private String nombresApellidos;
 
     @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Long dni;

@@ -48,6 +48,12 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+    public List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Long dni, Long numeroMatricula) {
+
+        return null;
+    }
+
+    @Override
     public Optional<FacturaDTO> actualizarFactura(UUID idFactura, FacturaDTO facturaActualizada) {
         Optional<Factura> facturaOptional = facturaRepository.findById(idFactura);
         if (facturaOptional.isPresent()){

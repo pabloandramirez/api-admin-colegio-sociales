@@ -43,40 +43,13 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     }
 
     @Override
-    public List<MatriculadoDTO> conseguirMatriculadoPorNumero(Long numero) {
+    public List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(String dni, String numero, String nombreApellido) {
         List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
-        for (Matriculado matriculado:
-                matriculadoRepository.findAll()) {
-            if (matriculado.getNumeroMatricula().toString().contains(numero.toString().trim())) {
-                matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-            }
-        }
-        return matriculadoDTOSList;
-    }
+        for (Matriculado matriculado : matriculadoRepository.findAll()) {
+            if (dni == null || dni.isBlank() && numero == null || numero.isBlank()) {
+                if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())){
 
-    @Override
-    public List<MatriculadoDTO> conseguirMatriculadoPorNombreApellido(String nombreApellido) {
-        List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
-        for (Matriculado matriculado:
-                matriculadoRepository.findAll()) {
-            if (matriculado.getNombres().contains(nombreApellido.trim())) {
-                matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-            }
-            if (matriculado.getApellido().contains(nombreApellido.trim())) {
-                matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-            }
-        }
-        return matriculadoDTOSList;
-    }
-
-    @Override
-    public List<MatriculadoDTO> conseguirMatriculadoPorDNI(Long dni) {
-        List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
-        for (Matriculado matriculado:
-                matriculadoRepository.findAll()) {
-            if (matriculado.getDni().toString().contains(dni.toString().trim())) {
-                matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-            }
+                }
         }
         return matriculadoDTOSList;
     }
@@ -123,7 +96,7 @@ public class MatriculadoServiceImpl implements MatriculadoService {
         }
 
         if (matriculadoActualizado.getBecadoOMonotributista() != null && !matriculadoActualizado.getBecadoOMonotributista().isBlank()){
-            matriculado.setBecadoOMonotributista(matriculadoActualizado.getBecadoOMonotributista());
+            matriculado.setBecadoOMonotributista(BecadoMonotributista.valueOf(matriculadoActualizado.getBecadoOMonotributista()));
         }
     }
 }

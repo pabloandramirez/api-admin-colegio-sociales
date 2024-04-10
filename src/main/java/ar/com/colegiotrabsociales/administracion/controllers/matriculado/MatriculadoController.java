@@ -25,35 +25,21 @@ public class MatriculadoController {
 
     //GET
     @GetMapping("/")
-    public List<MatriculadoDTO> getMatriculados(@RequestParam(value = "nombreApellido", required = false)
-                                                    String nombreApellido){
-        log.info("Muestra los matriculados por nombre/apellido, si no se ingresa por nombre muestra todos");
-        if (nombreApellido == null || nombreApellido.isBlank()){
+    public List<MatriculadoDTO> getMatriculadoPorNumeroMatricula(@RequestParam(value = "nombreApellido", required = false)
+                                                                     String nombreApellido,
+                                                                 @RequestParam(value = "dni", required = false)
+                                                                 String dni,
+                                                                 @RequestParam(value = "numeroMatricula", required = false)
+                                                                     String numeroMatricula){
+        log.info("Muestra el/los matrticulado/s por numero de matricula y/o numero de dni y/o nombre y/o apellido");
+        if (nombreApellido==null || nombreApellido.isBlank() && dni==null || dni.isBlank() && numeroMatricula==null || numeroMatricula.isBlank()) {
             return matriculadoService.conseguirMatriculados();
         } else {
-            if (matriculadoService.conseguirMatriculadoPorNombreApellido(nombreApellido).isEmpty()){
-                log.info("No se encontraron matriculados con este nombre/apellido: " + nombreApellido);
+            if (matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dni, numeroMatricula, nombreApellido).isEmpty()){
+                log.info("No se consiguio matriculado con estos datos: " + dni + ", " + numeroMatricula +", " + nombreApellido);
             }
         }
-        return matriculadoService.conseguirMatriculadoPorNombreApellido(nombreApellido);
-    }
-
-    @GetMapping("/{numeroMatricula}")
-    public List<MatriculadoDTO> getMatriculadoPorNumeroMatricula(@PathVariable(value = "numeroMatricula") Long numeroMatricula){
-        log.info("Muestra el/los matrticulado/s por numero de matricula");
-        if (matriculadoService.conseguirMatriculadoPorNumero(numeroMatricula).isEmpty()){
-            log.info("No existe matriculados con éste numero");
-        }
-        return matriculadoService.conseguirMatriculadoPorNumero(numeroMatricula);
-    }
-
-    @GetMapping("{dni}")
-    public List<MatriculadoDTO> getMatriculadoPorDNI(@PathVariable(value = "dni") Long numeroDNI){
-        log.info("Busca matriculados con coincidencia en el DNI");
-        if (matriculadoService.conseguirMatriculadoPorDNI(numeroDNI).isEmpty()){
-            log.info("No hay matriculado/s que coincidan con este número");
-        }
-        return matriculadoService.conseguirMatriculadoPorDNI(numeroDNI);
+        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dni, numeroMatricula, nombreApellido);
     }
 
 

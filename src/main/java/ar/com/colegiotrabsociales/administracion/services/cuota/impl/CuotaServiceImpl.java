@@ -2,6 +2,7 @@ package ar.com.colegiotrabsociales.administracion.services.cuota.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Cuota;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
@@ -74,7 +75,7 @@ public class CuotaServiceImpl implements CuotaService {
     public boolean actualizarCuotas(Categoria categoria, BecadoMonotributista becadoMonotributista, Long monto) {
         List<Cuota> cuotaList = cuotaRepository.findAll();
         for (Cuota cuota: cuotaList) {
-            if (cuota.getMatriculado().getCategoria()==categoria){
+            if (cuota.getMatriculado().getCategoria()==categoria && cuota.getFactura().getEnConvenio()== Convenio.NO){
                 if (cuota.getMatriculado().getCategoria()==Categoria.B){
                     if (cuota.getMatriculado().getBecadoOMonotributista()==becadoMonotributista){
                         cuota.setMonto(monto);

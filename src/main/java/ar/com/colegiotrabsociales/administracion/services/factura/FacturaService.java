@@ -18,6 +18,7 @@ public interface FacturaService {
 
     //GET
     List<FacturaDTO> verFacturas();
+    List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Long dni, Long numeroMatricula);
 
     //PUT
     Optional<FacturaDTO> actualizarFactura(UUID idFactura, FacturaDTO facturaActualizada);

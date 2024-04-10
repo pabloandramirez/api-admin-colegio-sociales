@@ -12,8 +12,7 @@ import java.util.List;
 public class MatriculadoDTO {
     private String idMatriculado;
     private String numeroMatricula;
-    private String nombres;
-    private String apellido;
+    private String nombresApellidos;
     private String dni;
     private String categoria;
     private String becadoOMonotributista;
