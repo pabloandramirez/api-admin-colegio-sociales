@@ -43,15 +43,50 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     }
 
     @Override
-    public List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(String dni, String numero, String nombreApellido) {
+    public List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(Long dni, Long numero, String nombreApellido) {
         List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
-        for (Matriculado matriculado : matriculadoRepository.findAll()) {
-            if (dni == null || dni.isBlank() && numero == null || numero.isBlank()) {
-                if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())){
-
+        List<Matriculado> matriculados = matriculadoRepository.findByDniContainingAndNumeroMatriculaContainingAndNombresApellidosContaining(
+                dni != null ? dni : "",
+                numero != null ? numero : "",
+                nombreApellido != null ? nombreApellido.toLowerCase().trim() : "");
+        /*for (Matriculado matriculado : matriculadoRepository.findAll()) {
+            if (dni == null || dni.isBlank()) {
+                if (numero == null || numero.isBlank()){
+                    if (nombreApellido!=null && !nombreApellido.isBlank()){
+                        if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())){
+                            matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+                        }
+                    }
+                } else if (nombreApellido==null || nombreApellido.isBlank()) {
+                    if (matriculado.getNumeroMatricula().toString().contains(numero.trim())){
+                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+                    }
+                } else{
+                    if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())
+                        && matriculado.getNumeroMatricula().toString().contains(numero.trim())){
+                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+                    }
                 }
-        }
-        return matriculadoDTOSList;
+            } else if (numero == null || numero.isBlank()) {
+                if (nombreApellido==null || nombreApellido.isBlank()) {
+                    if (matriculado.getDni().toString().contains(dni.trim())){
+                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+                    }
+                } else{
+                    if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())
+                            && matriculado.getDni().toString().contains(dni.trim())){
+                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+                    }
+                }
+            } else {
+                if (matriculado.getDni().toString().contains(dni.trim())
+                        && matriculado.getNumeroMatricula().toString().contains(numero.trim())){
+                    matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+                }
+            }
+
+        }*/
+            return matriculadoDTOSList;
     }
 
     @Override
@@ -79,16 +114,12 @@ public class MatriculadoServiceImpl implements MatriculadoService {
             matriculado.setDni(Long.valueOf(matriculadoActualizado.getDni().trim()));
         }
 
-        if (matriculadoActualizado.getNombres() != null && matriculadoActualizado.getNombres().isBlank()){
-            matriculado.setNombres(matriculadoActualizado.getNombres());
+        if (matriculadoActualizado.getNombresApellidos() != null && matriculadoActualizado.getNombresApellidos().isBlank()){
+            matriculado.setNombresApellidos(matriculadoActualizado.getNombresApellidos());
         }
 
         if (matriculadoActualizado.getNumeroMatricula() != null && !matriculadoActualizado.getNumeroMatricula().isBlank()){
             matriculado.setNumeroMatricula(Long.valueOf(matriculadoActualizado.getNumeroMatricula()));
-        }
-
-        if (matriculadoActualizado.getApellido() != null && !matriculadoActualizado.getApellido().isBlank()){
-            matriculado.setApellido(matriculadoActualizado.getApellido());
         }
 
         if (matriculado.getCategoria() != null && !matriculado.getCategoria().toString().isBlank()){

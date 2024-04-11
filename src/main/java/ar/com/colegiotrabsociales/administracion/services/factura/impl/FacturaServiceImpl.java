@@ -49,8 +49,30 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Long dni, Long numeroMatricula) {
-
-        return null;
+        List<FacturaDTO> facturaDTOList = new ArrayList<>();
+        List<Factura> facturas = facturaRepository.findByMatriculadoDniContainingAndMatriculadoNumeroMatriculaContaining(
+                dni != null ? dni : "",
+                numeroMatricula != null ? numeroMatricula : "");
+        for (Factura factura: facturas) {
+            facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
+        }
+        /*for (Factura factura: facturaRepository.findAll()) {
+            if (dni==null || dni.toString().isBlank()){
+                if (factura.getMatriculado().getNumeroMatricula().toString().contains(numeroMatricula.toString())){
+                    facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
+                }
+            } else if (numeroMatricula==null || numeroMatricula.toString().isBlank()){
+                if (factura.getMatriculado().getDni().toString().contains(dni.toString())){
+                    facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
+                }
+            } else{
+                if (factura.getMatriculado().getDni().toString().contains(dni.toString()) &&
+                        factura.getMatriculado().getNumeroMatricula().toString().contains(numeroMatricula.toString())){
+                    facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
+                }
+            }
+        }*/
+        return facturaDTOList;
     }
 
     @Override

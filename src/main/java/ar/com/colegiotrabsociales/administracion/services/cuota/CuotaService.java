@@ -17,6 +17,7 @@ public interface CuotaService {
 
     //GET
     List<CuotaDTO> verCuotas();
+    List<CuotaDTO> verCuotasPorDniNumeroMatricula(Long dni, Long numeroMatricula);
 
     //PUT
     Optional<CuotaDTO> actualizarCuota(UUID idCuota, CuotaDTO cuotaActualizada);

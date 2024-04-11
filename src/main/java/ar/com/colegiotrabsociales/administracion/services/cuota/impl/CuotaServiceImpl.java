@@ -61,6 +61,18 @@ public class CuotaServiceImpl implements CuotaService {
     }
 
     @Override
+    public List<CuotaDTO> verCuotasPorDniNumeroMatricula(Long dni, Long numeroMatricula) {
+        List<CuotaDTO> cuotaDTOList = new ArrayList<>();
+        List<Cuota> cuotas = cuotaRepository.findByMatriculadoDniContainingAndMatriculadoNumeroMatriculaContaining(
+                dni != null ? dni : "",
+                numeroMatricula != null ? numeroMatricula : "");
+        for (Cuota cuota: cuotas){
+            cuotaDTOList.add(cuotaMapper.cuotaToCuotaDTO(cuota));
+        }
+        return cuotaDTOList;
+    }
+
+    @Override
     public Optional<CuotaDTO> actualizarCuota(UUID idCuota, CuotaDTO cuotaActualizada) {
         Optional<Cuota> cuotaOptional = cuotaRepository.findById(idCuota);
         if (cuotaOptional.isPresent()){

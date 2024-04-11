@@ -25,7 +25,7 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
         return Matriculado.builder()
                 .uuid(UUID.randomUUID())
                 .dni(Long.valueOf(matriculadoDTO.getDni()))
-                .nombresApellidos(matriculadoDTO.getNombresApellidos())
+                .nombresApellidos(matriculadoDTO.getNombresApellidos().toLowerCase())
                 .numeroMatricula(Long.valueOf(matriculadoDTO.getNumeroMatricula()))
                 .categoria(getCategoria(matriculadoDTO.getCategoria()))
                 .build();

@@ -25,7 +25,7 @@ public class MatriculadoController {
 
     //GET
     @GetMapping("/")
-    public List<MatriculadoDTO> getMatriculadoPorNumeroMatricula(@RequestParam(value = "nombreApellido", required = false)
+    public List<MatriculadoDTO> getMatriculadoPorNombreNumMatriculaDNI(@RequestParam(value = "nombreApellido", required = false)
                                                                      String nombreApellido,
                                                                  @RequestParam(value = "dni", required = false)
                                                                  String dni,
@@ -35,11 +35,11 @@ public class MatriculadoController {
         if (nombreApellido==null || nombreApellido.isBlank() && dni==null || dni.isBlank() && numeroMatricula==null || numeroMatricula.isBlank()) {
             return matriculadoService.conseguirMatriculados();
         } else {
-            if (matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dni, numeroMatricula, nombreApellido).isEmpty()){
+            if (matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(Long.valueOf(dni), Long.valueOf(numeroMatricula), nombreApellido).isEmpty()){
                 log.info("No se consiguio matriculado con estos datos: " + dni + ", " + numeroMatricula +", " + nombreApellido);
             }
         }
-        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dni, numeroMatricula, nombreApellido);
+        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(Long.valueOf(dni), Long.valueOf(numeroMatricula), nombreApellido);
     }
 
 
@@ -55,7 +55,7 @@ public class MatriculadoController {
     }
 
     //PUT
-    @PutMapping("/{uuidMatriculado}")
+    @PutMapping("/actualizarMatriculado/{uuidMatriculado}")
     public ResponseEntity<Void> actualizarMatriculado(@PathVariable(value = "uuidMatriculado") UUID uuidMatriculado,
                                                       @RequestBody MatriculadoDTO matriculadoActualizado)
             throws NotFoundException {
@@ -70,7 +70,7 @@ public class MatriculadoController {
     }
 
     //DELETE
-    @DeleteMapping("/uuidMatriculado")
+    @DeleteMapping("/borrarMatriculado/{uuidMatriculado}")
     public ResponseEntity<Void> borrarMatriculado(@PathVariable(value = "uuidMatriculado") UUID uuidMatriculado)
             throws NotFoundException {
         boolean isMatriculadoBorrado = matriculadoService.borrarMatriculado(uuidMatriculado);
