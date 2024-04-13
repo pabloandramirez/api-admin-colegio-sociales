@@ -3,7 +3,6 @@ package ar.com.colegiotrabsociales.administracion.services.cuota.impl;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
-import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Cuota;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
@@ -17,9 +16,6 @@ import ar.com.colegiotrabsociales.administracion.services.cuota.CuotaService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -40,7 +36,7 @@ public class CuotaServiceImpl implements CuotaService {
         Optional<Factura> facturaOptional = facturaRepository.
                 findByNumero(Long.valueOf(cuotaDTO.getNumeroFactura()));
         Optional<Matriculado> matriculadoOptional = matriculadoRepository
-                .findByNumero(Long.valueOf(cuotaDTO.getNumeroMatriculado()));
+                .findByNumeroMatricula(Long.valueOf(cuotaDTO.getNumeroMatriculado()));
         if (facturaOptional.isPresent() || matriculadoOptional.isPresent()){
             facturaOptional.ifPresent(cuota::setFactura);
             matriculadoOptional.ifPresent(cuota::setMatriculado);
@@ -56,7 +52,6 @@ public class CuotaServiceImpl implements CuotaService {
         for (Cuota cuota: cuotaRepository.findAll()) {
             cuotaDTOList.add(cuotaMapper.cuotaToCuotaDTO(cuota));
         }
-        cuotaDTOList.sort(Comparator.comparing(CuotaDTO::getFechaVencimientoDate).reversed());
         return cuotaDTOList;
     }
 
@@ -120,28 +115,15 @@ public class CuotaServiceImpl implements CuotaService {
             cuota.setMonto(Long.valueOf(cuotaActualizada.getMonto()));
         }
 
-        if (cuotaActualizada.getFechaVencimientoString() != null && !cuotaActualizada.getFechaVencimientoString().isBlank()){
-            cuota.setFechaVencimiento(getLocalDate(cuotaActualizada.getFechaVencimientoString()));
-        }
-
-        if (cuotaActualizada.getPagoEstado() != null && !cuotaActualizada.getPagoEstado().isEmpty()){
-            cuota.setPagoEstado(PagoEstado.valueOf(cuotaActualizada.getPagoEstado()));
-        }
-
         if (cuotaActualizada.getNumeroFactura() != null && !cuotaActualizada.getNumeroFactura().isBlank()){
             Optional<Factura> facturaOptional = facturaRepository.findByNumero(Long.valueOf(cuotaActualizada.getNumeroFactura()));
             facturaOptional.ifPresent(cuota::setFactura);
         }
 
         if (cuotaActualizada.getNumeroMatriculado() != null && !cuotaActualizada.getNumeroMatriculado().isBlank()){
-            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(cuotaActualizada.getNumeroMatriculado()));
+            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumeroMatricula(Long.valueOf(cuotaActualizada.getNumeroMatriculado()));
             matriculadoOptional.ifPresent(cuota::setMatriculado);
         }
-    }
-
-    private LocalDate getLocalDate(String localDate){
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(localDate, formato);
     }
 
 }

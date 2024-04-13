@@ -2,6 +2,7 @@ package ar.com.colegiotrabsociales.administracion.mapper.factura.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.cuota.CuotaMapper;
@@ -25,6 +26,7 @@ public class FacturaMapperImpl implements FacturaMapper {
                 .uuid(UUID.randomUUID())
                 .numero(Long.valueOf(facturaDTO.getNumeroFactura()))
                 .enConvenio(getConvenio(facturaDTO.getEnConvenio()))
+                .pagoEstado(getPagoEstado(facturaDTO.getPagoEstado()))
                 .build();
     }
 
@@ -35,6 +37,7 @@ public class FacturaMapperImpl implements FacturaMapper {
                 .numeroFactura(String.valueOf(factura.getNumero()))
                 .numeroMatriculado(String.valueOf(factura.getMatriculado().getNumeroMatricula()))
                 .enConvenio(getConvenio(factura.getEnConvenio()))
+                .pagoEstado(getPagoEstado(factura.getPagoEstado()))
                 .cuotas(factura.getCuotaList().stream().map(cuota ->
                         cuotaMapper.cuotaToCuotaDTO(cuota).toString()).collect(Collectors.toList()))
                 .build();
@@ -53,5 +56,20 @@ public class FacturaMapperImpl implements FacturaMapper {
 
     private String getConvenio(Convenio convenio){
         return convenio.getConvenio();
+    }
+
+    private PagoEstado getPagoEstado(String pagoEstadoString){
+        if(!pagoEstadoString.isBlank()){
+            for (PagoEstado pagoEstado: PagoEstado.values()) {
+                if (pagoEstado.getPagoEstado().equalsIgnoreCase(pagoEstadoString)) {
+                    return pagoEstado;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getPagoEstado(PagoEstado pagoEstado){
+        return pagoEstado.getPagoEstado();
     }
 }

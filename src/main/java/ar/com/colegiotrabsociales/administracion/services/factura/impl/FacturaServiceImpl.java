@@ -28,7 +28,7 @@ public class FacturaServiceImpl implements FacturaService {
     @Override
     public Factura crearFactura(FacturaDTO facturaDTO) throws NotFoundException {
         Factura factura = facturaMapper.facturaDTOtoFactura(facturaDTO);
-        Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(facturaDTO.getNumeroMatriculado()));
+        Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumeroMatricula(Long.valueOf(facturaDTO.getNumeroMatriculado()));
         if (matriculadoOptional.isPresent()){
             factura.setMatriculado(matriculadoOptional.get());
             return facturaRepository.save(factura);
@@ -105,7 +105,7 @@ public class FacturaServiceImpl implements FacturaService {
         }
 
         if (facturaActualizada.getNumeroMatriculado() != null && !facturaActualizada.getNumeroMatriculado().isBlank()){
-            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumero(Long.valueOf(facturaActualizada.getNumeroMatriculado().trim()));
+            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumeroMatricula(Long.valueOf(facturaActualizada.getNumeroMatriculado().trim()));
             matriculadoOptional.ifPresent(factura::setMatriculado);
         }
     }

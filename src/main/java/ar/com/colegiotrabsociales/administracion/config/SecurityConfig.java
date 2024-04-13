@@ -48,10 +48,7 @@ public class SecurityConfig{
 
         return httpSecurity
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/noticia/").permitAll()
-                        .requestMatchers("/noticia/noticiaPorLong/**").permitAll()
-                        .requestMatchers("/noticia/paginado**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/contacto").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario/crearUsuario").permitAll()
                         .anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(request -> {

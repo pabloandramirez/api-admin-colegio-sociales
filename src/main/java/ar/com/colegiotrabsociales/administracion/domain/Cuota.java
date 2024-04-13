@@ -25,21 +25,17 @@ public class Cuota {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID uuid;
 
-    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long numero;
 
-    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long monto;
 
-    private LocalDate fechaVencimiento;
-
-    private PagoEstado pagoEstado;
-
     @ManyToOne
-    @JoinColumn(name = "factura_numero")
+    @JoinColumn(name = "factura_uuid", referencedColumnName = "uuid")
     private Factura factura;
 
     @ManyToOne
-    @JoinColumn(name = "matriculado_numero")
+    @JoinColumn(name = "matriculado_uuid", referencedColumnName = "uuid")
     private Matriculado matriculado;
 }

@@ -2,10 +2,8 @@ package ar.com.colegiotrabsociales.administracion.services.matriculado.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
-import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.matriculado.MatriculadoMapper;
-import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
 import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import ar.com.colegiotrabsociales.administracion.services.matriculado.MatriculadoService;
@@ -49,6 +47,9 @@ public class MatriculadoServiceImpl implements MatriculadoService {
                 dni != null ? dni : "",
                 numero != null ? numero : "",
                 nombreApellido != null ? nombreApellido.toLowerCase().trim() : "");
+        for (Matriculado matriculado: matriculados) {
+            matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+        }
         /*for (Matriculado matriculado : matriculadoRepository.findAll()) {
             if (dni == null || dni.isBlank()) {
                 if (numero == null || numero.isBlank()){

@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+src/main/resources/Wallet_IYHOCJRS8CDW95HC/
 src/main/resources/application.properties
 
 ### STS ###

@@ -1,16 +1,15 @@
 package ar.com.colegiotrabsociales.administracion.controllers.cuota;
 
 import ar.com.colegiotrabsociales.administracion.domain.Cuota;
-import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
 import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
-import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.services.cuota.CuotaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +26,7 @@ public class CuotaController {
 
     //GET
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<CuotaDTO> getCuotas(@RequestParam(value = "dni", required = false) String dniMatriculado,
                                     @RequestParam(value = "numeroMatricula", required = false) String numeroMatricula){
         log.info("Busca las cuotas por dni y/o numero del matriculado");
@@ -34,7 +34,7 @@ public class CuotaController {
             return cuotaService.verCuotas();
         } else {
             if (cuotaService.verCuotasPorDniNumeroMatricula(Long.valueOf(dniMatriculado), Long.valueOf(numeroMatricula)).isEmpty()){
-                log.warn("No hay facturas con este dni y/o numero de matriculado");
+                log.warn("No hay cuotas con este dni y/o numero de matriculado");
             }
         }
         return cuotaService.verCuotasPorDniNumeroMatricula(Long.valueOf(dniMatriculado), Long.valueOf(numeroMatricula));
@@ -42,7 +42,8 @@ public class CuotaController {
 
     //POST
     @PostMapping("")
-    public ResponseEntity<Void> crearFactura(@RequestBody CuotaDTO cuotaDTO) throws NotFoundException {
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    public ResponseEntity<Void> crearCuota(@RequestBody CuotaDTO cuotaDTO) throws NotFoundException {
         log.info("Se crea una nueva cuota");
         Cuota cuotaCreada = cuotaService.crearCuota(cuotaDTO);
 
@@ -52,6 +53,7 @@ public class CuotaController {
     }
 
     @PutMapping("/actualizarCuota/{uuidCuota}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> actualizarCuota(@PathVariable(value = "uuidCuota") UUID uuidCuota,
                                                   @RequestBody CuotaDTO cuotaActualizada)
             throws NotFoundException {
@@ -67,6 +69,7 @@ public class CuotaController {
 
     //DELETE
     @DeleteMapping("/borrarCuota/{uuidCuota}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> borrarCuota(@PathVariable(value = "uuidCuota") UUID uuidCuota)
             throws NotFoundException {
         boolean isCuotaBorrada = cuotaService.borrarCuota(uuidCuota);

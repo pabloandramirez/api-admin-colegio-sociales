@@ -14,5 +14,6 @@ public class FacturaDTO {
     private String numeroFactura;
     private String enConvenio;
     private String numeroMatriculado;
+    private String pagoEstado;
     private List<String> cuotas;
 }

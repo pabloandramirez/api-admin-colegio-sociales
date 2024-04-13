@@ -1,17 +1,15 @@
 package ar.com.colegiotrabsociales.administracion.controllers.factura;
 
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
-import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
-import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
-import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
 import ar.com.colegiotrabsociales.administracion.services.factura.FacturaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +26,7 @@ public class FacturaController {
 
     //GET
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<FacturaDTO> getFacturas(@RequestParam(value = "dni", required = false) String dniMatriculado,
                                         @RequestParam(value = "numeroMatricula", required = false) String numeroMatricula){
         log.info("Busca las facturas por dni y/o numero del matriculado");
@@ -43,6 +42,7 @@ public class FacturaController {
 
     //POST
     @PostMapping("")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> crearFactura(@RequestBody FacturaDTO facturaDTO) throws NotFoundException {
         log.info("Se crea una nueva factura");
         Factura facturaCreada = facturaService.crearFactura(facturaDTO);
@@ -54,6 +54,7 @@ public class FacturaController {
 
     //PUT
     @PutMapping("/actualizarFactura/{uuidFactura}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> actualizarFactura(@PathVariable(value = "uuidFactura") UUID uuidFactura,
                                                       @RequestBody FacturaDTO facturaActualizada)
             throws NotFoundException {
@@ -69,6 +70,7 @@ public class FacturaController {
 
     //DELETE
     @DeleteMapping("/borrarFactura/{uuidFactura}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> borrarFactura(@PathVariable(value = "uuidFactura") UUID uuidFactura)
             throws NotFoundException {
         boolean isFacturaBorrada = facturaService.borrarFactura(uuidFactura);

@@ -2,6 +2,7 @@ package ar.com.colegiotrabsociales.administracion.domain;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -27,14 +28,17 @@ public class Factura {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID uuid;
 
-    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long numero;
 
-    @Column(updatable = true, nullable = false)
+    @Column(name = "pago_estado", nullable = false, length = 36)
+    private PagoEstado pagoEstado;
+
+    @Column(name = "en_convenio", nullable = false, length = 36)
     private Convenio enConvenio;
 
     @ManyToOne
-    @JoinColumn(name = "matriculado_numero")
+    @JoinColumn(name = "matriculado_uuid", referencedColumnName = "uuid")
     private Matriculado matriculado;
 
     @OneToMany(mappedBy = "factura")

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class MatriculadoController {
 
     //GET
     @GetMapping("/")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<MatriculadoDTO> getMatriculadoPorNombreNumMatriculaDNI(@RequestParam(value = "nombreApellido", required = false)
                                                                      String nombreApellido,
                                                                  @RequestParam(value = "dni", required = false)
@@ -45,6 +47,7 @@ public class MatriculadoController {
 
     //POST
     @PostMapping("")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> crearMatriculado(@RequestBody MatriculadoDTO matriculadoDTO){
         log.info("Se crea un nuevo matriculado");
         Matriculado matriculadoCreado = matriculadoService.crearMatriculado(matriculadoDTO);
@@ -56,6 +59,7 @@ public class MatriculadoController {
 
     //PUT
     @PutMapping("/actualizarMatriculado/{uuidMatriculado}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> actualizarMatriculado(@PathVariable(value = "uuidMatriculado") UUID uuidMatriculado,
                                                       @RequestBody MatriculadoDTO matriculadoActualizado)
             throws NotFoundException {
@@ -71,6 +75,7 @@ public class MatriculadoController {
 
     //DELETE
     @DeleteMapping("/borrarMatriculado/{uuidMatriculado}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public ResponseEntity<Void> borrarMatriculado(@PathVariable(value = "uuidMatriculado") UUID uuidMatriculado)
             throws NotFoundException {
         boolean isMatriculadoBorrado = matriculadoService.borrarMatriculado(uuidMatriculado);

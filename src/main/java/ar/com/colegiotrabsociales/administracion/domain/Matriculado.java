@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,21 +28,24 @@ public class Matriculado {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID uuid;
 
-    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long numeroMatricula;
 
     @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = false)
     private String nombresApellidos;
 
-    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long dni;
 
-    @Column(updatable = true, nullable = false)
+    @Column(name = "categoria", nullable = false, length = 36)
     private Categoria categoria;
 
-    @Column(updatable = true, nullable = false)
+    @Column(name = "becado_monotributista", nullable = false, length = 36)
     private BecadoMonotributista becadoOMonotributista;
 
     @OneToMany(mappedBy = "matriculado")
-    private List<Factura> facturas;
+    private List<Factura> facturas = new ArrayList<>();;
+
+    @OneToMany(mappedBy = "matriculado")
+    private List<Cuota> cuotas = new ArrayList<>();;
 }

@@ -4,7 +4,6 @@ import ar.com.colegiotrabsociales.administracion.domain.Usuario;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
 import ar.com.colegiotrabsociales.administracion.model.usuario.UsuarioDTO;
 import ar.com.colegiotrabsociales.administracion.services.usuario.UsuarioService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +26,7 @@ public class UsuarioController {
 
     //GET
     @GetMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UsuarioDTO> getUsuarios(@RequestParam(name = "name", required = false) String nombre){
         log.info("Busca por nombre, si no encuentra muestra todos");
         if (nombre == null || nombre.isBlank()){
