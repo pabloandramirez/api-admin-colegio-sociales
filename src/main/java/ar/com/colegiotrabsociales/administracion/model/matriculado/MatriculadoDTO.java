@@ -1,5 +1,6 @@
 package ar.com.colegiotrabsociales.administracion.model.matriculado;
 
+import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import lombok.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class MatriculadoDTO {
     private String dni;
     private String categoria;
     private String becadoOMonotributista;
-    private List<String> facturas;
+    private List<FacturaDTO> facturas;
 }
 
 

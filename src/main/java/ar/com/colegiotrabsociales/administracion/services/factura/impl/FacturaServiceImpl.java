@@ -43,7 +43,7 @@ public class FacturaServiceImpl implements FacturaService {
         for (Factura factura: facturaRepository.findAll()) {
             facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
         }
-        facturaDTOList.sort(Comparator.comparing(FacturaDTO::getNumeroFactura).reversed());
+        facturaDTOList.sort(Comparator.comparing(FacturaDTO::getAnioLong).reversed());
         return facturaDTOList;
     }
 

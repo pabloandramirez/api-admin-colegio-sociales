@@ -128,7 +128,19 @@ public class MatriculadoServiceImpl implements MatriculadoService {
         }
 
         if (matriculadoActualizado.getBecadoOMonotributista() != null && !matriculadoActualizado.getBecadoOMonotributista().isBlank()){
-            matriculado.setBecadoOMonotributista(BecadoMonotributista.valueOf(matriculadoActualizado.getBecadoOMonotributista()));
+            matriculado.setBecadoOMonotributista(getBecadoMonotributista(matriculadoActualizado.getBecadoOMonotributista()));
         }
     }
+
+    private BecadoMonotributista getBecadoMonotributista(String becadoMonotributistaString){
+        if(!becadoMonotributistaString.isBlank()){
+            for (BecadoMonotributista becadoMonotributista: BecadoMonotributista.values()) {
+                if (becadoMonotributista.getBecadoMonotributista().equalsIgnoreCase(becadoMonotributistaString)) {
+                    return becadoMonotributista;
+                }
+            }
+        }
+        return null;
+    }
+
 }

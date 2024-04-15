@@ -6,6 +6,9 @@ import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Component
@@ -17,6 +20,7 @@ public class CuotaMapperImpl implements CuotaMapper {
                 .uuid(UUID.randomUUID())
                 .numero(Long.valueOf(cuotaDTO.getNumeroCuota()))
                 .monto(Long.valueOf(cuotaDTO.getMonto()))
+                .fechaPago(getLocalDate(cuotaDTO.getFechaPagoString()))
                 .build();
     }
 
@@ -28,7 +32,20 @@ public class CuotaMapperImpl implements CuotaMapper {
                 .monto(String.valueOf(cuota.getMonto()))
                 .numeroFactura(String.valueOf(cuota.getFactura().getNumero()))
                 .numeroMatriculado(String.valueOf(cuota.getMatriculado().getNumeroMatricula()))
+                .fechaPagoString(getLocalDate(cuota.getFechaPago()))
+                .fechaPagoLocalDate(cuota.getFechaPago())
                 .build();
+    }
+
+    private String getLocalDate(LocalDate localDate){
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return localDate.format(formato);
+    }
+
+    private LocalDate getLocalDate(String localDate){
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(localDate, formato);
     }
 
 }

@@ -16,4 +16,6 @@ public class CuotaDTO {
     private String monto;
     private String numeroFactura;
     private String numeroMatriculado;
+    private String fechaPagoString;
+    private LocalDate fechaPagoLocalDate;
 }

@@ -6,11 +6,13 @@ import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Role;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
 import ar.com.colegiotrabsociales.administracion.mapper.matriculado.MatriculadoMapper;
+import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,27 +24,36 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
 
     @Override
     public Matriculado matriculadoDTOtoMatriculado(MatriculadoDTO matriculadoDTO) {
-        return Matriculado.builder()
+        Matriculado.MatriculadoBuilder builder = Matriculado.builder()
                 .uuid(UUID.randomUUID())
                 .dni(Long.valueOf(matriculadoDTO.getDni()))
                 .nombresApellidos(matriculadoDTO.getNombresApellidos().toLowerCase())
                 .numeroMatricula(Long.valueOf(matriculadoDTO.getNumeroMatricula()))
-                .categoria(getCategoria(matriculadoDTO.getCategoria()))
-                .build();
+                .categoria(getCategoria(matriculadoDTO.getCategoria()));
+
+        if (matriculadoDTO.getBecadoOMonotributista() != null) {
+            builder.becadoOMonotributista(getBecadoMonotributista(matriculadoDTO.getBecadoOMonotributista()));
+        }
+
+        return builder.build();
     }
 
     @Override
     public MatriculadoDTO matriculadoToMatriculadoDTO(Matriculado matriculado) {
-        return MatriculadoDTO.builder()
+        MatriculadoDTO.MatriculadoDTOBuilder builder = MatriculadoDTO.builder()
                 .idMatriculado(String.valueOf(matriculado.getUuid()))
                 .dni(String.valueOf(matriculado.getDni()))
                 .nombresApellidos(matriculado.getNombresApellidos())
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
-                .becadoOMonotributista(getBecadoMonotributista(matriculado.getBecadoOMonotributista()))
-                .facturas(matriculado.getFacturas().stream().map(factura ->
-                        facturaMapper.facturaToFacturaDTO(factura).toString()).collect(Collectors.toList()))
-                .build();
+                .facturas(matriculado.getFacturas().stream().map(facturaMapper::facturaToFacturaDTO).collect(Collectors.toList()));
+
+        if (matriculado.getBecadoOMonotributista() != null) {
+            builder.becadoOMonotributista(getBecadoMonotributista(matriculado.getBecadoOMonotributista()));
+        }
+
+
+        return builder.build();
     }
 
     private Categoria getCategoria(String categoriaString){

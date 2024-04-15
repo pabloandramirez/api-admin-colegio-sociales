@@ -52,6 +52,7 @@ public class CuotaServiceImpl implements CuotaService {
         for (Cuota cuota: cuotaRepository.findAll()) {
             cuotaDTOList.add(cuotaMapper.cuotaToCuotaDTO(cuota));
         }
+        cuotaDTOList.sort(Comparator.comparing(CuotaDTO::getFechaPagoLocalDate).reversed());
         return cuotaDTOList;
     }
 

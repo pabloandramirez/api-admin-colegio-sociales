@@ -25,6 +25,7 @@ public class FacturaMapperImpl implements FacturaMapper {
         return Factura.builder()
                 .uuid(UUID.randomUUID())
                 .numero(Long.valueOf(facturaDTO.getNumeroFactura()))
+                .anio(Long.valueOf(facturaDTO.getAnioString()))
                 .enConvenio(getConvenio(facturaDTO.getEnConvenio()))
                 .pagoEstado(getPagoEstado(facturaDTO.getPagoEstado()))
                 .build();
@@ -36,10 +37,10 @@ public class FacturaMapperImpl implements FacturaMapper {
                 .idFactura(String.valueOf(factura.getUuid()))
                 .numeroFactura(String.valueOf(factura.getNumero()))
                 .numeroMatriculado(String.valueOf(factura.getMatriculado().getNumeroMatricula()))
+                .anioString(String.valueOf(factura.getAnio()))
                 .enConvenio(getConvenio(factura.getEnConvenio()))
                 .pagoEstado(getPagoEstado(factura.getPagoEstado()))
-                .cuotas(factura.getCuotaList().stream().map(cuota ->
-                        cuotaMapper.cuotaToCuotaDTO(cuota).toString()).collect(Collectors.toList()))
+                .cuotas(factura.getCuotaList().stream().map(cuotaMapper::cuotaToCuotaDTO).collect(Collectors.toList()))
                 .build();
     }
 

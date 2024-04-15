@@ -31,6 +31,8 @@ public class Cuota {
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long monto;
 
+    private LocalDate fechaPago;
+
     @ManyToOne
     @JoinColumn(name = "factura_uuid", referencedColumnName = "uuid")
     private Factura factura;

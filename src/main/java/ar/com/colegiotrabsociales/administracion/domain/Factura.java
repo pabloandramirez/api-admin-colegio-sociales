@@ -31,6 +31,9 @@ public class Factura {
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long numero;
 
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
+    private Long anio;
+
     @Column(name = "pago_estado", nullable = false, length = 36)
     private PagoEstado pagoEstado;
 

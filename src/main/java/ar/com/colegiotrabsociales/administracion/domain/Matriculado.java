@@ -37,10 +37,10 @@ public class Matriculado {
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Long dni;
 
-    @Column(name = "categoria", nullable = false, length = 36)
+    @Column(name = "categoria", updatable = true, nullable = false, length = 36)
     private Categoria categoria;
 
-    @Column(name = "becado_monotributista", nullable = false, length = 36)
+    @Column(name = "becado_monotributista", updatable = true, nullable = true, length = 36)
     private BecadoMonotributista becadoOMonotributista;
 
     @OneToMany(mappedBy = "matriculado")

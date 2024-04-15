@@ -26,7 +26,7 @@ public class MatriculadoController {
 
     //GET
     @GetMapping("/")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<MatriculadoDTO> getMatriculadoPorNombreNumMatriculaDNI(@RequestParam(value = "nombreApellido", required = false)
                                                                      String nombreApellido,
                                                                  @RequestParam(value = "dni", required = false)
@@ -47,7 +47,7 @@ public class MatriculadoController {
 
     //POST
     @PostMapping("")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> crearMatriculado(@RequestBody MatriculadoDTO matriculadoDTO){
         log.info("Se crea un nuevo matriculado");
         Matriculado matriculadoCreado = matriculadoService.crearMatriculado(matriculadoDTO);
@@ -59,7 +59,7 @@ public class MatriculadoController {
 
     //PUT
     @PutMapping("/actualizarMatriculado/{uuidMatriculado}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> actualizarMatriculado(@PathVariable(value = "uuidMatriculado") UUID uuidMatriculado,
                                                       @RequestBody MatriculadoDTO matriculadoActualizado)
             throws NotFoundException {
@@ -75,7 +75,7 @@ public class MatriculadoController {
 
     //DELETE
     @DeleteMapping("/borrarMatriculado/{uuidMatriculado}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> borrarMatriculado(@PathVariable(value = "uuidMatriculado") UUID uuidMatriculado)
             throws NotFoundException {
         boolean isMatriculadoBorrado = matriculadoService.borrarMatriculado(uuidMatriculado);
