@@ -1,9 +1,11 @@
 package ar.com.colegiotrabsociales.administracion.services.usuario.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Role;
+import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.domain.Usuario;
 import ar.com.colegiotrabsociales.administracion.mapper.usuario.UsuarioMapper;
 import ar.com.colegiotrabsociales.administracion.model.usuario.UsuarioDTO;
+import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import ar.com.colegiotrabsociales.administracion.repository.usuario.UsuarioRepository;
 import ar.com.colegiotrabsociales.administracion.services.usuario.UsuarioService;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioMapper usuarioMapper;
 
     private final UsuarioRepository usuarioRepository;
+
+    private final MatriculadoRepository matriculadoRepository;
 
     @Override
     public List<UsuarioDTO> getUsuarios() {
@@ -45,6 +49,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario crearUsuario(UsuarioDTO usuarioDTO) {
         Usuario usuarioCreado = usuarioMapper.usuarioDTOtoUsuario(usuarioDTO);
+        if (usuarioDTO.getNumeroMatriculado()!= null && !usuarioDTO.getNumeroMatriculado().isBlank()){
+            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumeroMatricula(Long.valueOf(usuarioDTO.getNumeroMatriculado()));
+            matriculadoOptional.ifPresent(usuarioCreado::setMatriculado);
+        }
         return usuarioRepository.save(usuarioCreado);
     }
 

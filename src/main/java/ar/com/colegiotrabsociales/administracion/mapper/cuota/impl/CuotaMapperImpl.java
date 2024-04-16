@@ -18,8 +18,8 @@ public class CuotaMapperImpl implements CuotaMapper {
     public Cuota cuotaDTOtoCuota(CuotaDTO cuotaDTO) {
         return Cuota.builder()
                 .uuid(UUID.randomUUID())
-                .numero(Long.valueOf(cuotaDTO.getNumeroCuota()))
-                .monto(Long.valueOf(cuotaDTO.getMonto()))
+                .numero(Integer.parseInt(cuotaDTO.getNumeroCuota().trim()))
+                .monto(Double.valueOf(cuotaDTO.getMonto().trim()))
                 .fechaPago(getLocalDate(cuotaDTO.getFechaPagoString()))
                 .build();
     }

@@ -18,6 +18,7 @@ public class MatriculadoDTO {
     private String categoria;
     private String becadoOMonotributista;
     private List<FacturaDTO> facturas;
+    private String usuario;
 }
 
 

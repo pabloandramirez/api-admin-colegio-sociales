@@ -97,7 +97,7 @@ public class FacturaServiceImpl implements FacturaService {
 
     private void actualizacionFactura(Factura factura, FacturaDTO facturaActualizada){
         if (facturaActualizada.getNumeroFactura() != null && facturaActualizada.getNumeroFactura().isBlank()){
-            factura.setNumero(Long.valueOf(facturaActualizada.getNumeroFactura().trim()));
+            factura.setNumero(Integer.parseInt(facturaActualizada.getNumeroFactura().trim()));
         }
 
         if (facturaActualizada.getEnConvenio() != null && facturaActualizada.getEnConvenio().isBlank()){

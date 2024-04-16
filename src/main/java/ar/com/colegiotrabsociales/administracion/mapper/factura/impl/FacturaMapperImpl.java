@@ -7,11 +7,15 @@ import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.cuota.CuotaMapper;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
+import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.services.matriculado.MatriculadoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,8 +28,8 @@ public class FacturaMapperImpl implements FacturaMapper {
     public Factura facturaDTOtoFactura(FacturaDTO facturaDTO) {
         return Factura.builder()
                 .uuid(UUID.randomUUID())
-                .numero(Long.valueOf(facturaDTO.getNumeroFactura()))
-                .anio(Long.valueOf(facturaDTO.getAnioString()))
+                .numero(Integer.parseInt(facturaDTO.getNumeroFactura().trim()))
+                .anio(Integer.parseInt(facturaDTO.getAnio().trim()))
                 .enConvenio(getConvenio(facturaDTO.getEnConvenio()))
                 .pagoEstado(getPagoEstado(facturaDTO.getPagoEstado()))
                 .build();
@@ -33,14 +37,17 @@ public class FacturaMapperImpl implements FacturaMapper {
 
     @Override
     public FacturaDTO facturaToFacturaDTO(Factura factura) {
+        List<CuotaDTO> cuotaDTOList;
+        cuotaDTOList = factura.getCuotaList().stream().map(cuotaMapper::cuotaToCuotaDTO).collect(Collectors.toList());
+        cuotaDTOList.sort(Comparator.comparing(CuotaDTO::getFechaPagoLocalDate).reversed());
         return FacturaDTO.builder()
                 .idFactura(String.valueOf(factura.getUuid()))
                 .numeroFactura(String.valueOf(factura.getNumero()))
                 .numeroMatriculado(String.valueOf(factura.getMatriculado().getNumeroMatricula()))
-                .anioString(String.valueOf(factura.getAnio()))
+                .anio(String.valueOf(factura.getAnio()))
                 .enConvenio(getConvenio(factura.getEnConvenio()))
                 .pagoEstado(getPagoEstado(factura.getPagoEstado()))
-                .cuotas(factura.getCuotaList().stream().map(cuotaMapper::cuotaToCuotaDTO).collect(Collectors.toList()))
+                .cuotas(cuotaDTOList)
                 .build();
     }
 

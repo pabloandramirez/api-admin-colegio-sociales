@@ -13,8 +13,8 @@ import java.util.List;
 public class FacturaDTO {
     private String idFactura;
     private String numeroFactura;
-    private String anioString;
-    private Long anioLong;
+    private String anio;
+    private Integer anioLong;
     private String enConvenio;
     private String numeroMatriculado;
     private String pagoEstado;

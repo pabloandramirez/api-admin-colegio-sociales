@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,14 +35,36 @@ public class MatriculadoController {
                                                                  @RequestParam(value = "numeroMatricula", required = false)
                                                                      String numeroMatricula){
         log.info("Muestra el/los matrticulado/s por numero de matricula y/o numero de dni y/o nombre y/o apellido");
-        if (nombreApellido==null || nombreApellido.isBlank() && dni==null || dni.isBlank() && numeroMatricula==null || numeroMatricula.isBlank()) {
+        if ((nombreApellido == null || nombreApellido.isBlank()) &&
+                (dni == null || dni.isBlank()) &&
+                (numeroMatricula == null || numeroMatricula.isBlank())) {
             return matriculadoService.conseguirMatriculados();
-        } else {
-            if (matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(Long.valueOf(dni), Long.valueOf(numeroMatricula), nombreApellido).isEmpty()){
-                log.info("No se consiguio matriculado con estos datos: " + dni + ", " + numeroMatricula +", " + nombreApellido);
+        }
+
+        Long dniLong = null;
+        Long numeroMatriculaLong = null;
+
+        if (dni != null && !dni.isEmpty()) {
+            try {
+                dniLong = Long.valueOf(dni);
+            } catch (NumberFormatException e) {
+                log.error("Error al convertir dni a Long: {}", e.getMessage());
+                // Puedes devolver una lista vacía o manejar el error de otra forma
+                return Collections.emptyList();
             }
         }
-        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(Long.valueOf(dni), Long.valueOf(numeroMatricula), nombreApellido);
+
+        if (numeroMatricula != null && !numeroMatricula.isEmpty()) {
+            try {
+                numeroMatriculaLong = Long.valueOf(numeroMatricula);
+            } catch (NumberFormatException e) {
+                log.error("Error al convertir numeroMatricula a Long: {}", e.getMessage());
+                // Puedes devolver una lista vacía o manejar el error de otra forma
+                return Collections.emptyList();
+            }
+        }
+
+        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniLong, numeroMatriculaLong, nombreApellido);
     }
 
 

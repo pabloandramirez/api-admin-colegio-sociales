@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -26,12 +27,12 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
     public Matriculado matriculadoDTOtoMatriculado(MatriculadoDTO matriculadoDTO) {
         Matriculado.MatriculadoBuilder builder = Matriculado.builder()
                 .uuid(UUID.randomUUID())
-                .dni(Long.valueOf(matriculadoDTO.getDni()))
-                .nombresApellidos(matriculadoDTO.getNombresApellidos().toLowerCase())
-                .numeroMatricula(Long.valueOf(matriculadoDTO.getNumeroMatricula()))
-                .categoria(getCategoria(matriculadoDTO.getCategoria()));
+                .dni(Integer.parseInt(matriculadoDTO.getDni().trim()))
+                .nombresApellidos(matriculadoDTO.getNombresApellidos().trim().toLowerCase())
+                .numeroMatricula(Integer.parseInt(matriculadoDTO.getNumeroMatricula().trim()))
+                .categoria(getCategoria(matriculadoDTO.getCategoria().trim()));
 
-        if (matriculadoDTO.getBecadoOMonotributista() != null) {
+        if (matriculadoDTO.getCategoria().equalsIgnoreCase(String.valueOf(Categoria.B))) {
             builder.becadoOMonotributista(getBecadoMonotributista(matriculadoDTO.getBecadoOMonotributista()));
         }
 
@@ -40,13 +41,19 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
 
     @Override
     public MatriculadoDTO matriculadoToMatriculadoDTO(Matriculado matriculado) {
+        List<FacturaDTO> facturaDTOList = new java.util.ArrayList<>(matriculado.getFacturas().stream().map(facturaMapper::facturaToFacturaDTO).toList());
+        facturaDTOList.sort(Comparator.comparing(FacturaDTO::getAnioLong).reversed());
         MatriculadoDTO.MatriculadoDTOBuilder builder = MatriculadoDTO.builder()
                 .idMatriculado(String.valueOf(matriculado.getUuid()))
                 .dni(String.valueOf(matriculado.getDni()))
                 .nombresApellidos(matriculado.getNombresApellidos())
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
-                .facturas(matriculado.getFacturas().stream().map(facturaMapper::facturaToFacturaDTO).collect(Collectors.toList()));
+                .facturas(facturaDTOList);
+
+        if(matriculado.getUsuario() != null){
+            builder.usuario(matriculado.getUsuario().getUsuario());
+        }
 
         if (matriculado.getBecadoOMonotributista() != null) {
             builder.becadoOMonotributista(getBecadoMonotributista(matriculado.getBecadoOMonotributista()));

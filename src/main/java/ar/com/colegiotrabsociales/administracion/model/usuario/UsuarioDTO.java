@@ -16,4 +16,5 @@ public class UsuarioDTO {
     private String usuario;
     private String password;
     private Set<String> roles;
+    private String numeroMatriculado;
 }

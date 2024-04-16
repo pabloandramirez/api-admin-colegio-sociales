@@ -26,10 +26,10 @@ public class Cuota {
     private UUID uuid;
 
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Long numero;
+    private Integer numero;
 
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Long monto;
+    private Double monto;
 
     private LocalDate fechaPago;
 

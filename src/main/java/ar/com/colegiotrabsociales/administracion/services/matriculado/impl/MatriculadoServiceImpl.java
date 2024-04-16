@@ -3,9 +3,11 @@ package ar.com.colegiotrabsociales.administracion.services.matriculado.impl;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
+import ar.com.colegiotrabsociales.administracion.domain.Usuario;
 import ar.com.colegiotrabsociales.administracion.mapper.matriculado.MatriculadoMapper;
 import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
 import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
+import ar.com.colegiotrabsociales.administracion.repository.usuario.UsuarioRepository;
 import ar.com.colegiotrabsociales.administracion.services.matriculado.MatriculadoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,14 @@ public class MatriculadoServiceImpl implements MatriculadoService {
 
     private final MatriculadoRepository matriculadoRepository;
 
+    private final UsuarioRepository usuarioRepository;
+
     @Override
     public Matriculado crearMatriculado(MatriculadoDTO matriculadoDTO) {
         Matriculado matriculado = matriculadoMapper.matriculadoDTOtoMatriculado(matriculadoDTO);
-        if (matriculado.getCategoria() == Categoria.B){
-            matriculado.setBecadoOMonotributista(BecadoMonotributista.valueOf(matriculadoDTO.getBecadoOMonotributista()));
+        if (matriculadoDTO.getUsuario() != null && !matriculadoDTO.getUsuario().isBlank()){
+            Optional<Usuario> usuarioOptional = usuarioRepository.findByUsuario(matriculadoDTO.getUsuario());
+            usuarioOptional.ifPresent(matriculado::setUsuario);
         }
         return matriculadoRepository.save(matriculado);
     }
@@ -44,49 +49,13 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     public List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(Long dni, Long numero, String nombreApellido) {
         List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
         List<Matriculado> matriculados = matriculadoRepository.findByDniContainingAndNumeroMatriculaContainingAndNombresApellidosContaining(
-                dni != null ? dni : "",
-                numero != null ? numero : "",
-                nombreApellido != null ? nombreApellido.toLowerCase().trim() : "");
+                String.valueOf(dni != null ? dni : ""),
+                String.valueOf(numero != null ? numero : ""),
+                nombreApellido != null ? nombreApellido.toLowerCase().trim() : ""
+        );
         for (Matriculado matriculado: matriculados) {
             matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
         }
-        /*for (Matriculado matriculado : matriculadoRepository.findAll()) {
-            if (dni == null || dni.isBlank()) {
-                if (numero == null || numero.isBlank()){
-                    if (nombreApellido!=null && !nombreApellido.isBlank()){
-                        if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())){
-                            matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                        }
-                    }
-                } else if (nombreApellido==null || nombreApellido.isBlank()) {
-                    if (matriculado.getNumeroMatricula().toString().contains(numero.trim())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                } else{
-                    if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())
-                        && matriculado.getNumeroMatricula().toString().contains(numero.trim())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                }
-            } else if (numero == null || numero.isBlank()) {
-                if (nombreApellido==null || nombreApellido.isBlank()) {
-                    if (matriculado.getDni().toString().contains(dni.trim())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                } else{
-                    if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())
-                            && matriculado.getDni().toString().contains(dni.trim())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                }
-            } else {
-                if (matriculado.getDni().toString().contains(dni.trim())
-                        && matriculado.getNumeroMatricula().toString().contains(numero.trim())){
-                    matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                }
-            }
-
-        }*/
             return matriculadoDTOSList;
     }
 
@@ -112,7 +81,7 @@ public class MatriculadoServiceImpl implements MatriculadoService {
 
     private void actualizacionMatriculado(Matriculado matriculado, MatriculadoDTO matriculadoActualizado){
         if (matriculadoActualizado.getDni() != null && matriculadoActualizado.getDni().isBlank()){
-            matriculado.setDni(Long.valueOf(matriculadoActualizado.getDni().trim()));
+            matriculado.setDni(Integer.valueOf(matriculadoActualizado.getDni().trim()));
         }
 
         if (matriculadoActualizado.getNombresApellidos() != null && matriculadoActualizado.getNombresApellidos().isBlank()){
@@ -120,7 +89,7 @@ public class MatriculadoServiceImpl implements MatriculadoService {
         }
 
         if (matriculadoActualizado.getNumeroMatricula() != null && !matriculadoActualizado.getNumeroMatricula().isBlank()){
-            matriculado.setNumeroMatricula(Long.valueOf(matriculadoActualizado.getNumeroMatricula()));
+            matriculado.setNumeroMatricula(Integer.parseInt(matriculadoActualizado.getNumeroMatricula()));
         }
 
         if (matriculado.getCategoria() != null && !matriculado.getCategoria().toString().isBlank()){

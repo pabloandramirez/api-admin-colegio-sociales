@@ -2,10 +2,7 @@ package ar.com.colegiotrabsociales.administracion.domain;
 
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Role;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -38,4 +35,8 @@ public class Usuario {
     private String password;
 
     private Set<Role> roles;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "matriculado_uuid")
+    private Matriculado matriculado;
 }

@@ -86,11 +86,11 @@ public class CuotaServiceImpl implements CuotaService {
             if (cuota.getMatriculado().getCategoria()==categoria && cuota.getFactura().getEnConvenio()== Convenio.NO){
                 if (cuota.getMatriculado().getCategoria()==Categoria.B){
                     if (cuota.getMatriculado().getBecadoOMonotributista()==becadoMonotributista){
-                        cuota.setMonto(monto);
+                        cuota.setMonto(Double.valueOf(monto));
                         cuotaRepository.saveAndFlush(cuota);
                     }
                 } else{
-                    cuota.setMonto(monto);
+                    cuota.setMonto(Double.valueOf(monto));
                     cuotaRepository.saveAndFlush(cuota);
                 }
             }
@@ -109,11 +109,11 @@ public class CuotaServiceImpl implements CuotaService {
 
     private void actualizacionCuota(Cuota cuota, CuotaDTO cuotaActualizada){
         if (cuotaActualizada.getNumeroCuota() != null && cuotaActualizada.getNumeroCuota().isBlank()){
-            cuota.setNumero(Long.valueOf(cuotaActualizada.getNumeroCuota()));
+            cuota.setNumero(Integer.parseInt(cuotaActualizada.getNumeroCuota()));
         }
 
         if (cuotaActualizada.getMonto() != null && cuotaActualizada.getMonto().isBlank()){
-            cuota.setMonto(Long.valueOf(cuotaActualizada.getMonto()));
+            cuota.setMonto(Double.valueOf(cuotaActualizada.getMonto()));
         }
 
         if (cuotaActualizada.getNumeroFactura() != null && !cuotaActualizada.getNumeroFactura().isBlank()){

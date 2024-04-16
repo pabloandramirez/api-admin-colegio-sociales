@@ -29,13 +29,13 @@ public class Matriculado {
     private UUID uuid;
 
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Long numeroMatricula;
+    private Integer numeroMatricula;
 
     @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = false)
     private String nombresApellidos;
 
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Long dni;
+    private Integer dni;
 
     @Column(name = "categoria", updatable = true, nullable = false, length = 36)
     private Categoria categoria;
@@ -44,8 +44,12 @@ public class Matriculado {
     private BecadoMonotributista becadoOMonotributista;
 
     @OneToMany(mappedBy = "matriculado")
-    private List<Factura> facturas = new ArrayList<>();;
+    private List<Factura> facturas = new ArrayList<>();
 
     @OneToMany(mappedBy = "matriculado")
-    private List<Cuota> cuotas = new ArrayList<>();;
+    private List<Cuota> cuotas = new ArrayList<>();
+
+
+    @OneToOne(mappedBy = "matriculado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Usuario usuario;
 }

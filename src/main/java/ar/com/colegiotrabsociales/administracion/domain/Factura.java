@@ -29,10 +29,10 @@ public class Factura {
     private UUID uuid;
 
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Long numero;
+    private Integer numero;
 
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Long anio;
+    private Integer anio;
 
     @Column(name = "pago_estado", nullable = false, length = 36)
     private PagoEstado pagoEstado;
