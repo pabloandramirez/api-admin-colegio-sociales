@@ -10,6 +10,7 @@ import ar.com.colegiotrabsociales.administracion.repository.factura.FacturaRepos
 import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import ar.com.colegiotrabsociales.administracion.services.factura.FacturaService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
@@ -17,6 +18,7 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class FacturaServiceImpl implements FacturaService {
 
     private FacturaMapper facturaMapper;
@@ -33,6 +35,7 @@ public class FacturaServiceImpl implements FacturaService {
             factura.setMatriculado(matriculadoOptional.get());
             return facturaRepository.save(factura);
         } else {
+            log.warn("No se encontro el matriculado");
             throw new NotFoundException();
         }
     }

@@ -1,6 +1,7 @@
 package ar.com.colegiotrabsociales.administracion.config.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -72,5 +73,20 @@ public class JwtUtils {
     public Key getSignatureKey(){
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public boolean validateJwtToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
+            return true;
+        } catch (JwtException e) {
+            // Maneja las excepciones de JWT aquí
+            return false;
+        }
+    }
+
+    public String getUserNameFromJwtToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return claims.getSubject();
     }
 }

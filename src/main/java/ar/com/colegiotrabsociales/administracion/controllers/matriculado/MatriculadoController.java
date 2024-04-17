@@ -41,12 +41,12 @@ public class MatriculadoController {
             return matriculadoService.conseguirMatriculados();
         }
 
-        Long dniLong = null;
-        Long numeroMatriculaLong = null;
+        Integer dniInteger = null;
+        Integer numeroMatriculaInteger = null;
 
         if (dni != null && !dni.isEmpty()) {
             try {
-                dniLong = Long.valueOf(dni);
+                dniInteger = Integer.parseInt(dni.trim());
             } catch (NumberFormatException e) {
                 log.error("Error al convertir dni a Long: {}", e.getMessage());
                 // Puedes devolver una lista vacía o manejar el error de otra forma
@@ -56,7 +56,7 @@ public class MatriculadoController {
 
         if (numeroMatricula != null && !numeroMatricula.isEmpty()) {
             try {
-                numeroMatriculaLong = Long.valueOf(numeroMatricula);
+                numeroMatriculaInteger = Integer.parseInt(numeroMatricula.trim());
             } catch (NumberFormatException e) {
                 log.error("Error al convertir numeroMatricula a Long: {}", e.getMessage());
                 // Puedes devolver una lista vacía o manejar el error de otra forma
@@ -64,7 +64,7 @@ public class MatriculadoController {
             }
         }
 
-        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniLong, numeroMatriculaLong, nombreApellido);
+        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniInteger, numeroMatriculaInteger, nombreApellido);
     }
 
 
