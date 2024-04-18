@@ -46,7 +46,7 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
         MatriculadoDTO.MatriculadoDTOBuilder builder = MatriculadoDTO.builder()
                 .idMatriculado(String.valueOf(matriculado.getUuid()))
                 .dni(String.valueOf(matriculado.getDni()))
-                .nombresApellidos(matriculado.getNombresApellidos())
+                .nombresApellidos(matriculado.getNombresApellidos().toUpperCase())
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
                 .facturas(facturaDTOList);

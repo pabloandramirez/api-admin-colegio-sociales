@@ -26,7 +26,10 @@ public class AuthController {
 
         String token = authHeader.substring(7);
         String isValid = String.valueOf(jwtUtils.validateJwtToken(token));
-        String username = jwtUtils.getUserNameFromJwtToken(token);
+        String username = "";
+        if (Boolean.getBoolean(isValid)){
+            username = jwtUtils.getUserNameFromJwtToken(token);
+        }
         return ResponseEntity.ok(Map.of("valid", isValid , "username", username));
     }
 }

@@ -15,5 +15,4 @@ public interface MatriculadoRepository extends JpaRepository<Matriculado, UUID> 
 
     Optional<Matriculado> findByNumeroMatricula(Long numero);
 
-    List<Matriculado> findByDniContainingAndNumeroMatriculaContainingAndNombresApellidosContaining(Integer dni, Integer numero, String nombreApellido);
 }

@@ -67,6 +67,17 @@ public class MatriculadoController {
         return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniInteger, numeroMatriculaInteger, nombreApellido);
     }
 
+    @GetMapping("/{usuario}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    public List<MatriculadoDTO> getMatriculadoPorUsuario(@PathVariable(value = "usuario") String usuario){
+        log.info("Muestra el matriculado por nombre de usuario");
+        if (matriculadoService.conseguirMatriculadoPorUsuario(usuario).isEmpty()){
+            log.info("No hay matriculados con ese usuario");
+        }
+
+        return matriculadoService.conseguirMatriculadoPorUsuario(usuario);
+    }
+
 
     //POST
     @PostMapping("")

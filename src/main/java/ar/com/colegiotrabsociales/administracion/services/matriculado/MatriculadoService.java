@@ -15,6 +15,7 @@ public interface MatriculadoService {
     //GET
     List<MatriculadoDTO> conseguirMatriculados();
     List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(Integer dni, Integer numero, String nombreApellido);
+    List<MatriculadoDTO> conseguirMatriculadoPorUsuario(String usuario);
 
     //PUT
     Optional<MatriculadoDTO> actualizarMatriculado(UUID idMatriculado, MatriculadoDTO matriculadoActualizado);
