@@ -42,7 +42,7 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
     @Override
     public MatriculadoDTO matriculadoToMatriculadoDTO(Matriculado matriculado) {
         List<FacturaDTO> facturaDTOList = new java.util.ArrayList<>(matriculado.getFacturas().stream().map(facturaMapper::facturaToFacturaDTO).toList());
-        facturaDTOList.sort(Comparator.comparing(FacturaDTO::getAnioLong).reversed());
+        facturaDTOList.sort(Comparator.comparing(FacturaDTO::getAnio).reversed());
         MatriculadoDTO.MatriculadoDTOBuilder builder = MatriculadoDTO.builder()
                 .idMatriculado(String.valueOf(matriculado.getUuid()))
                 .dni(String.valueOf(matriculado.getDni()))
