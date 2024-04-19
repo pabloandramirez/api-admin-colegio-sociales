@@ -1,19 +1,15 @@
 package ar.com.colegiotrabsociales.administracion.mapper.factura.impl;
 
-import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
-import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.cuota.CuotaMapper;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
 import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
-import ar.com.colegiotrabsociales.administracion.services.matriculado.MatriculadoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;

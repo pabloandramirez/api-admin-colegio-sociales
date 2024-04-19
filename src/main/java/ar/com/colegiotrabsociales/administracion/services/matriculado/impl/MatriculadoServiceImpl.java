@@ -2,6 +2,7 @@ package ar.com.colegiotrabsociales.administracion.services.matriculado.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.MatriculadoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.domain.Usuario;
 import ar.com.colegiotrabsociales.administracion.mapper.matriculado.MatriculadoMapper;
@@ -149,12 +150,16 @@ public class MatriculadoServiceImpl implements MatriculadoService {
             matriculado.setNumeroMatricula(Integer.parseInt(matriculadoActualizado.getNumeroMatricula()));
         }
 
-        if (matriculado.getCategoria() != null && !matriculado.getCategoria().toString().isBlank()){
+        if (matriculadoActualizado.getCategoria() != null && !matriculadoActualizado.getCategoria().isBlank()){
             matriculado.setCategoria(Categoria.valueOf(matriculadoActualizado.getCategoria()));
         }
 
         if (matriculadoActualizado.getBecadoOMonotributista() != null && !matriculadoActualizado.getBecadoOMonotributista().isBlank()){
             matriculado.setBecadoOMonotributista(getBecadoMonotributista(matriculadoActualizado.getBecadoOMonotributista()));
+        }
+
+        if(matriculadoActualizado.getMatriculadoEstado() != null && !matriculadoActualizado.getMatriculadoEstado().isBlank()) {
+            matriculado.setMatriculadoEstado(getMatriculadoEstado(matriculadoActualizado.getMatriculadoEstado()));
         }
     }
 
@@ -163,6 +168,17 @@ public class MatriculadoServiceImpl implements MatriculadoService {
             for (BecadoMonotributista becadoMonotributista: BecadoMonotributista.values()) {
                 if (becadoMonotributista.getBecadoMonotributista().equalsIgnoreCase(becadoMonotributistaString)) {
                     return becadoMonotributista;
+                }
+            }
+        }
+        return null;
+    }
+
+    private MatriculadoEstado getMatriculadoEstado(String estadoMatriculadoString){
+        if(!estadoMatriculadoString.isBlank()){
+            for (MatriculadoEstado matriculadoEstado: MatriculadoEstado.values()) {
+                if (matriculadoEstado.getEstado().equalsIgnoreCase(estadoMatriculadoString)) {
+                    return matriculadoEstado;
                 }
             }
         }

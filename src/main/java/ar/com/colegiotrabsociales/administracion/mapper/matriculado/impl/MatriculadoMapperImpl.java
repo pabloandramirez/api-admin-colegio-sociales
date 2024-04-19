@@ -2,6 +2,7 @@ package ar.com.colegiotrabsociales.administracion.mapper.matriculado.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.MatriculadoEstado;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Role;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
@@ -30,7 +31,9 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .dni(Integer.parseInt(matriculadoDTO.getDni().trim()))
                 .nombresApellidos(matriculadoDTO.getNombresApellidos().trim().toLowerCase())
                 .numeroMatricula(Integer.parseInt(matriculadoDTO.getNumeroMatricula().trim()))
-                .categoria(getCategoria(matriculadoDTO.getCategoria().trim()));
+                .categoria(getCategoria(matriculadoDTO.getCategoria().trim()))
+                .matriculadoEstado(getMatriculadoEstado(matriculadoDTO.getMatriculadoEstado()))
+                .linkLegajo(matriculadoDTO.getLinkLegajo());
 
         if (matriculadoDTO.getCategoria().equalsIgnoreCase(String.valueOf(Categoria.B))) {
             builder.becadoOMonotributista(getBecadoMonotributista(matriculadoDTO.getBecadoOMonotributista()));
@@ -59,6 +62,13 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
             builder.becadoOMonotributista(getBecadoMonotributista(matriculado.getBecadoOMonotributista()));
         }
 
+        if (matriculado.getMatriculadoEstado() != null){
+            builder.matriculadoEstado(getMatriculadoEstado(matriculado.getMatriculadoEstado()));
+        }
+
+        if (matriculado.getLinkLegajo() != null){
+            builder.linkLegajo(matriculado.getLinkLegajo().trim());
+        }
 
         return builder.build();
     }
@@ -91,5 +101,20 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
 
     private String getBecadoMonotributista(BecadoMonotributista becadoMonotributista){
         return becadoMonotributista.getBecadoMonotributista();
+    }
+
+    private MatriculadoEstado getMatriculadoEstado(String estadoMatriculadoString){
+        if(!estadoMatriculadoString.isBlank()){
+            for (MatriculadoEstado matriculadoEstado: MatriculadoEstado.values()) {
+                if (matriculadoEstado.getEstado().equalsIgnoreCase(estadoMatriculadoString)) {
+                    return matriculadoEstado;
+                }
+            }
+        }
+        return null;
+    }
+
+    private String getMatriculadoEstado(MatriculadoEstado matriculadoEstado){
+        return matriculadoEstado.getEstado();
     }
 }

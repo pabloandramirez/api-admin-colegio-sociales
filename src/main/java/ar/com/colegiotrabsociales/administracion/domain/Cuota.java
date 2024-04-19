@@ -40,4 +40,7 @@ public class Cuota {
     @ManyToOne
     @JoinColumn(name = "matriculado_uuid", referencedColumnName = "uuid")
     private Matriculado matriculado;
+
+    @Column(name = "link_comprobante", nullable = true)
+    private String linkComprobante;
 }

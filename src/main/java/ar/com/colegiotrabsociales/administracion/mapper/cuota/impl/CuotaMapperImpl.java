@@ -21,20 +21,27 @@ public class CuotaMapperImpl implements CuotaMapper {
                 .numero(Integer.parseInt(cuotaDTO.getNumeroCuota().trim()))
                 .monto(Double.valueOf(cuotaDTO.getMonto().trim()))
                 .fechaPago(getLocalDate(cuotaDTO.getFechaPagoString()))
+                .linkComprobante(cuotaDTO.getLinkComprobante().trim())
                 .build();
     }
 
     @Override
     public CuotaDTO cuotaToCuotaDTO(Cuota cuota) {
-        return CuotaDTO.builder()
+        CuotaDTO.CuotaDTOBuilder builder = CuotaDTO.builder()
                 .idCuota(String.valueOf(cuota.getUuid()))
                 .numeroCuota(String.valueOf(cuota.getNumero()))
                 .monto(String.valueOf(cuota.getMonto()))
                 .numeroFactura(String.valueOf(cuota.getFactura().getNumero()))
                 .numeroMatriculado(String.valueOf(cuota.getMatriculado().getNumeroMatricula()))
                 .fechaPagoString(getLocalDate(cuota.getFechaPago()))
-                .fechaPagoLocalDate(cuota.getFechaPago())
-                .build();
+                .fechaPagoLocalDate(cuota.getFechaPago());
+
+
+        if (cuota.getLinkComprobante()!=null){
+            builder.linkComprobante(cuota.getLinkComprobante());
+        }
+
+        return builder.build();
     }
 
     private String getLocalDate(LocalDate localDate){

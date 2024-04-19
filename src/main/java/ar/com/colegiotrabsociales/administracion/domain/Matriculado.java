@@ -3,6 +3,7 @@ package ar.com.colegiotrabsociales.administracion.domain;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.MatriculadoEstado;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,12 +44,17 @@ public class Matriculado {
     @Column(name = "becado_monotributista", updatable = true, nullable = true, length = 36)
     private BecadoMonotributista becadoOMonotributista;
 
+    @Column(name = "estado_matriculado", updatable = true, nullable = true, length = 36)
+    private MatriculadoEstado matriculadoEstado;
+
     @OneToMany(mappedBy = "matriculado")
     private List<Factura> facturas = new ArrayList<>();
 
     @OneToMany(mappedBy = "matriculado")
     private List<Cuota> cuotas = new ArrayList<>();
 
+    @Column(name = "link_legajo", nullable = true)
+    private String linkLegajo;
 
     @OneToOne(mappedBy = "matriculado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Usuario usuario;

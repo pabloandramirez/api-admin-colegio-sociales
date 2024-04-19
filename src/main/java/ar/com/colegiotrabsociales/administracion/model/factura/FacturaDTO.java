@@ -14,7 +14,7 @@ public class FacturaDTO {
     private String idFactura;
     private String numeroFactura;
     private String anio;
-    private Integer anioLong;
+    private Integer anioInt;
     private String enConvenio;
     private String numeroMatriculado;
     private String pagoEstado;

@@ -17,8 +17,10 @@ public class MatriculadoDTO {
     private String dni;
     private String categoria;
     private String becadoOMonotributista;
+    private String matriculadoEstado;
     private List<FacturaDTO> facturas;
     private String usuario;
+    private String linkLegajo;
 }
 
 

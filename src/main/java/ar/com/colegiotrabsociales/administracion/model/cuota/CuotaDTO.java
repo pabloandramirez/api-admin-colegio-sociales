@@ -18,4 +18,5 @@ public class CuotaDTO {
     private String numeroMatriculado;
     private String fechaPagoString;
     private LocalDate fechaPagoLocalDate;
+    private String linkComprobante;
 }

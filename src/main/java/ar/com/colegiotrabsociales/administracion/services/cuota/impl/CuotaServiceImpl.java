@@ -125,6 +125,10 @@ public class CuotaServiceImpl implements CuotaService {
             Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumeroMatricula(Long.valueOf(cuotaActualizada.getNumeroMatriculado()));
             matriculadoOptional.ifPresent(cuota::setMatriculado);
         }
+
+        if (cuotaActualizada.getLinkComprobante() != null && !cuotaActualizada.getLinkComprobante().isBlank()){
+            cuota.setLinkComprobante(cuotaActualizada.getLinkComprobante());
+        }
     }
 
 }
