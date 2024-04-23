@@ -11,6 +11,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,4 +59,11 @@ public class Matriculado {
 
     @OneToOne(mappedBy = "matriculado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Usuario usuario;
+
+    public List<Factura> getFacturas(){
+        List<Factura> facturas = this.facturas;
+        facturas.sort(Comparator.comparing(Factura::getAnio).reversed());
+        return facturas;
+    }
+
 }

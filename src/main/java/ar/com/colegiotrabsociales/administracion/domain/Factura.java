@@ -10,6 +10,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,9 @@ public class Factura {
     private Integer numero;
 
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
+    private Double montoFactura;
+
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Integer anio;
 
     @Column(name = "pago_estado", nullable = false, length = 36)
@@ -46,4 +50,10 @@ public class Factura {
 
     @OneToMany(mappedBy = "factura")
     private List<Cuota> cuotaList;
+
+    public List<Cuota> getCuotaList(){
+        List<Cuota> cuotas = this.cuotaList;
+        cuotas.sort(Comparator.comparing(Cuota::getFechaPago).reversed());
+        return cuotas;
+    }
 }

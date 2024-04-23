@@ -4,15 +4,18 @@ import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotribu
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.MatriculadoEstado;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Role;
+import ar.com.colegiotrabsociales.administracion.domain.Cuota;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
 import ar.com.colegiotrabsociales.administracion.mapper.matriculado.MatriculadoMapper;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
+import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -23,6 +26,8 @@ import java.util.stream.Collectors;
 public class MatriculadoMapperImpl implements MatriculadoMapper {
 
     private final FacturaMapper facturaMapper;
+
+    private final MatriculadoRepository matriculadoRepository;
 
     @Override
     public Matriculado matriculadoDTOtoMatriculado(MatriculadoDTO matriculadoDTO) {
@@ -63,7 +68,7 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
         }
 
         if (matriculado.getMatriculadoEstado() != null){
-            builder.matriculadoEstado(getMatriculadoEstado(matriculado.getMatriculadoEstado()));
+            builder.matriculadoEstado(actualizarMatriculadoEstado(matriculado));
         }
 
         if (matriculado.getLinkLegajo() != null){
@@ -116,5 +121,23 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
 
     private String getMatriculadoEstado(MatriculadoEstado matriculadoEstado){
         return matriculadoEstado.getEstado();
+    }
+
+    private String actualizarMatriculadoEstado(Matriculado matriculado){
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaLimite = fechaActual.minusMonths(3);
+        LocalDate ultimaFechaCuotaPaga = matriculado.getFacturas().get(0).getCuotaList().get(0).getFechaPago();
+        if (ultimaFechaCuotaPaga == null || ultimaFechaCuotaPaga.isBefore(fechaLimite)){
+            matriculado.setMatriculadoEstado(MatriculadoEstado.IRREGULAR);
+            matriculadoRepository.saveAndFlush(matriculado);
+            return matriculado.getMatriculadoEstado().getEstado();
+        } else if(ultimaFechaCuotaPaga.isAfter(fechaLimite)){
+            matriculado.setMatriculadoEstado(MatriculadoEstado.ACTIVO);
+            matriculadoRepository.saveAndFlush(matriculado);
+            return matriculado.getMatriculadoEstado().getEstado();
+        } else {
+            return matriculado.getMatriculadoEstado().getEstado();
+        }
+
     }
 }
