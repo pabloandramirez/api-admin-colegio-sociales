@@ -3,6 +3,7 @@ package ar.com.colegiotrabsociales.administracion.services.cuota.impl;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.MetodoPago;
 import ar.com.colegiotrabsociales.administracion.domain.Cuota;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
@@ -16,6 +17,8 @@ import ar.com.colegiotrabsociales.administracion.services.cuota.CuotaService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -129,6 +132,30 @@ public class CuotaServiceImpl implements CuotaService {
         if (cuotaActualizada.getLinkComprobante() != null && !cuotaActualizada.getLinkComprobante().isBlank()){
             cuota.setLinkComprobante(cuotaActualizada.getLinkComprobante());
         }
+
+        if (cuotaActualizada.getMetodoPago()!=null && !cuotaActualizada.getMetodoPago().isBlank()){
+            cuota.setMetodoPago(getMetodoPago(cuotaActualizada.getMetodoPago()));
+        }
+
+        if (cuotaActualizada.getFechaPago()!= null && !cuotaActualizada.getFechaPago().isBlank()){
+            cuota.setFechaPago(getLocalDate(cuotaActualizada.getFechaPago()));
+        }
+    }
+
+    private MetodoPago getMetodoPago(String metodoPagoString){
+        if(!metodoPagoString.isBlank()){
+            for (MetodoPago metodoPago: MetodoPago.values()) {
+                if (metodoPago.getMetodoPago().equalsIgnoreCase(metodoPagoString)) {
+                    return metodoPago;
+                }
+            }
+        }
+        return null;
+    }
+
+    private LocalDate getLocalDate(String localDate){
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(localDate, formato);
     }
 
 }

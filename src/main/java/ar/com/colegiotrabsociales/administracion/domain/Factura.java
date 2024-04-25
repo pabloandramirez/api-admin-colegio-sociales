@@ -35,6 +35,9 @@ public class Factura {
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Double montoFactura;
 
+    @Column(columnDefinition = "NUMBER", updatable = true, nullable = true)
+    private Double saldo;
+
     @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
     private Integer anio;
 

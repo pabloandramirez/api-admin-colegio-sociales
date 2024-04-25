@@ -126,18 +126,22 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
     private String actualizarMatriculadoEstado(Matriculado matriculado){
         LocalDate fechaActual = LocalDate.now();
         LocalDate fechaLimite = fechaActual.minusMonths(3);
-        LocalDate ultimaFechaCuotaPaga = matriculado.getFacturas().get(0).getCuotaList().get(0).getFechaPago();
-        if (ultimaFechaCuotaPaga == null || ultimaFechaCuotaPaga.isBefore(fechaLimite)){
-            matriculado.setMatriculadoEstado(MatriculadoEstado.IRREGULAR);
-            matriculadoRepository.saveAndFlush(matriculado);
-            return matriculado.getMatriculadoEstado().getEstado();
-        } else if(ultimaFechaCuotaPaga.isAfter(fechaLimite)){
-            matriculado.setMatriculadoEstado(MatriculadoEstado.ACTIVO);
-            matriculadoRepository.saveAndFlush(matriculado);
-            return matriculado.getMatriculadoEstado().getEstado();
-        } else {
-            return matriculado.getMatriculadoEstado().getEstado();
+        if (!matriculado.getFacturas().isEmpty()){
+            if (!matriculado.getFacturas().get(0).getCuotaList().isEmpty()){
+                LocalDate ultimaFechaCuotaPaga = matriculado.getFacturas().get(0).getCuotaList().get(0).getFechaPago();
+                if (ultimaFechaCuotaPaga == null || ultimaFechaCuotaPaga.isBefore(fechaLimite)){
+                    matriculado.setMatriculadoEstado(MatriculadoEstado.IRREGULAR);
+                    matriculadoRepository.saveAndFlush(matriculado);
+                    return matriculado.getMatriculadoEstado().getEstado();
+                } else if(ultimaFechaCuotaPaga.isAfter(fechaLimite)){
+                    matriculado.setMatriculadoEstado(MatriculadoEstado.ACTIVO);
+                    matriculadoRepository.saveAndFlush(matriculado);
+                    return matriculado.getMatriculadoEstado().getEstado();
+                } else {
+                    return matriculado.getMatriculadoEstado().getEstado();
+                }
+            }
         }
-
+        return matriculado.getMatriculadoEstado().getEstado();
     }
 }

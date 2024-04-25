@@ -161,6 +161,10 @@ public class MatriculadoServiceImpl implements MatriculadoService {
         if(matriculadoActualizado.getMatriculadoEstado() != null && !matriculadoActualizado.getMatriculadoEstado().isBlank()) {
             matriculado.setMatriculadoEstado(getMatriculadoEstado(matriculadoActualizado.getMatriculadoEstado()));
         }
+
+        if (matriculadoActualizado.getLinkLegajo() != null && !matriculadoActualizado.getLinkLegajo().isBlank()){
+            matriculado.setLinkLegajo(matriculadoActualizado.getLinkLegajo());
+        }
     }
 
     private BecadoMonotributista getBecadoMonotributista(String becadoMonotributistaString){

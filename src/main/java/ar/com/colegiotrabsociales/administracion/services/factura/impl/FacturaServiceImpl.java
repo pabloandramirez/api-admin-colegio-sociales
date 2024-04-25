@@ -1,6 +1,7 @@
 package ar.com.colegiotrabsociales.administracion.services.factura.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
@@ -111,6 +112,18 @@ public class FacturaServiceImpl implements FacturaService {
             Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumeroMatricula(Long.valueOf(facturaActualizada.getNumeroMatriculado().trim()));
             matriculadoOptional.ifPresent(factura::setMatriculado);
         }
+
+        if (facturaActualizada.getMonto()!= null && !facturaActualizada.getMonto().isBlank()){
+            factura.setMontoFactura(Double.valueOf(facturaActualizada.getMonto()));
+        }
+
+        if (facturaActualizada.getAnio()!=null && !facturaActualizada.getAnio().isBlank()){
+            factura.setAnio(Integer.valueOf(facturaActualizada.getAnio()));
+        }
+
+        if (facturaActualizada.getPagoEstado()!=null && !facturaActualizada.getPagoEstado().isBlank()){
+            factura.setPagoEstado(getPagoEstado(facturaActualizada.getPagoEstado()));
+        }
     }
 
 
@@ -119,6 +132,17 @@ public class FacturaServiceImpl implements FacturaService {
             for (Convenio convenio: Convenio.values()) {
                 if (convenio.getConvenio().equalsIgnoreCase(convenioString)) {
                     return convenio;
+                }
+            }
+        }
+        return null;
+    }
+
+    private PagoEstado getPagoEstado(String pagoEstadoString){
+        if(!pagoEstadoString.isBlank()){
+            for (PagoEstado pagoEstado: PagoEstado.values()) {
+                if (pagoEstado.getPagoEstado().equalsIgnoreCase(pagoEstadoString)) {
+                    return pagoEstado;
                 }
             }
         }

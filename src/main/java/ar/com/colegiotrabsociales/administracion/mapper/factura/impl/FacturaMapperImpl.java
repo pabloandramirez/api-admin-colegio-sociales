@@ -8,7 +8,6 @@ import ar.com.colegiotrabsociales.administracion.mapper.cuota.CuotaMapper;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
 import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
-import ar.com.colegiotrabsociales.administracion.repository.cuota.CuotaRepository;
 import ar.com.colegiotrabsociales.administracion.repository.factura.FacturaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -47,6 +46,7 @@ public class FacturaMapperImpl implements FacturaMapper {
                 .numeroFactura(String.valueOf(factura.getNumero()))
                 .numeroMatriculado(String.valueOf(factura.getMatriculado().getNumeroMatricula()))
                 .monto(factura.getMontoFactura().toString())
+                .saldo(saldoFactura(factura))
                 .anio(String.valueOf(factura.getAnio()))
                 .enConvenio(getConvenio(factura.getEnConvenio()))
                 .pagoEstado(cambiarPagoEstado(factura))
@@ -103,5 +103,19 @@ public class FacturaMapperImpl implements FacturaMapper {
         } else {
             return factura.getPagoEstado().getPagoEstado();
         }
+    }
+
+    private String saldoFactura(Factura factura){
+        Double montoFactura = factura.getMontoFactura();
+        Double totalPagado = 0.0;
+        List<Cuota> cuotaList = factura.getCuotaList();
+        if (!cuotaList.isEmpty()){
+            for (Cuota cuota: cuotaList){
+                totalPagado += cuota.getMonto();
+            }
+        }
+        factura.setSaldo(montoFactura-totalPagado);
+        facturaRepository.saveAndFlush(factura);
+        return factura.getSaldo().toString();
     }
 }

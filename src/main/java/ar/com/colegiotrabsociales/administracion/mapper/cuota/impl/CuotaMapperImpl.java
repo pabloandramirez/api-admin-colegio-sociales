@@ -1,7 +1,6 @@
 package ar.com.colegiotrabsociales.administracion.mapper.cuota.impl;
 
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.MetodoPago;
-import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Cuota;
 import ar.com.colegiotrabsociales.administracion.mapper.cuota.CuotaMapper;
 import ar.com.colegiotrabsociales.administracion.model.cuota.CuotaDTO;
@@ -9,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
@@ -23,7 +21,7 @@ public class CuotaMapperImpl implements CuotaMapper {
                 .numero(Integer.parseInt(cuotaDTO.getNumeroCuota().trim()))
                 .monto(Double.valueOf(cuotaDTO.getMonto().trim()))
                 .metodoPago(getMetodoPago(cuotaDTO.getMetodoPago()))
-                .fechaPago(getLocalDate(cuotaDTO.getFechaPagoString()))
+                .fechaPago(getLocalDate(cuotaDTO.getFechaPago()))
                 .linkComprobante(cuotaDTO.getLinkComprobante().trim())
                 .build();
     }
@@ -37,7 +35,7 @@ public class CuotaMapperImpl implements CuotaMapper {
                 .metodoPago(getMetodoPago(cuota.getMetodoPago()))
                 .numeroFactura(String.valueOf(cuota.getFactura().getNumero()))
                 .numeroMatriculado(String.valueOf(cuota.getMatriculado().getNumeroMatricula()))
-                .fechaPagoString(getLocalDate(cuota.getFechaPago()))
+                .fechaPago(getLocalDate(cuota.getFechaPago()))
                 .fechaPagoLocalDate(cuota.getFechaPago());
 
 

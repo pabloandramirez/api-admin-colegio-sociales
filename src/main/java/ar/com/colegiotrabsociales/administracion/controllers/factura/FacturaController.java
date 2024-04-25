@@ -26,7 +26,7 @@ public class FacturaController {
 
     //GET
     @GetMapping("/")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<FacturaDTO> getFacturas(@RequestParam(value = "dni", required = false) String dniMatriculado,
                                         @RequestParam(value = "numeroMatricula", required = false) String numeroMatricula){
         log.info("Busca las facturas por dni y/o numero del matriculado");
@@ -42,7 +42,7 @@ public class FacturaController {
 
     //POST
     @PostMapping("")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> crearFactura(@RequestBody FacturaDTO facturaDTO) throws NotFoundException {
         log.info("Se crea una nueva factura");
         Factura facturaCreada = facturaService.crearFactura(facturaDTO);
@@ -54,7 +54,7 @@ public class FacturaController {
 
     //PUT
     @PutMapping("/actualizarFactura/{uuidFactura}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> actualizarFactura(@PathVariable(value = "uuidFactura") UUID uuidFactura,
                                                       @RequestBody FacturaDTO facturaActualizada)
             throws NotFoundException {
@@ -70,7 +70,7 @@ public class FacturaController {
 
     //DELETE
     @DeleteMapping("/borrarFactura/{uuidFactura}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> borrarFactura(@PathVariable(value = "uuidFactura") UUID uuidFactura)
             throws NotFoundException {
         boolean isFacturaBorrada = facturaService.borrarFactura(uuidFactura);

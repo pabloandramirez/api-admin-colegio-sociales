@@ -26,7 +26,7 @@ public class CuotaController {
 
     //GET
     @GetMapping("/")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<CuotaDTO> getCuotas(@RequestParam(value = "dni", required = false) String dniMatriculado,
                                     @RequestParam(value = "numeroMatricula", required = false) String numeroMatricula){
         log.info("Busca las cuotas por dni y/o numero del matriculado");
@@ -42,7 +42,7 @@ public class CuotaController {
 
     //POST
     @PostMapping("")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> crearCuota(@RequestBody CuotaDTO cuotaDTO) throws NotFoundException {
         log.info("Se crea una nueva cuota");
         Cuota cuotaCreada = cuotaService.crearCuota(cuotaDTO);
@@ -53,7 +53,7 @@ public class CuotaController {
     }
 
     @PutMapping("/actualizarCuota/{uuidCuota}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> actualizarCuota(@PathVariable(value = "uuidCuota") UUID uuidCuota,
                                                   @RequestBody CuotaDTO cuotaActualizada)
             throws NotFoundException {
@@ -69,7 +69,7 @@ public class CuotaController {
 
     //DELETE
     @DeleteMapping("/borrarCuota/{uuidCuota}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> borrarCuota(@PathVariable(value = "uuidCuota") UUID uuidCuota)
             throws NotFoundException {
         boolean isCuotaBorrada = cuotaService.borrarCuota(uuidCuota);

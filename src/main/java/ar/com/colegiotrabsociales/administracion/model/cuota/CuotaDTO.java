@@ -17,7 +17,7 @@ public class CuotaDTO {
     private String metodoPago;
     private String numeroFactura;
     private String numeroMatriculado;
-    private String fechaPagoString;
+    private String fechaPago;
     private LocalDate fechaPagoLocalDate;
     private String linkComprobante;
 }
