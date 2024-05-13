@@ -30,13 +30,13 @@ public class Matriculado {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID uuid;
 
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
+    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Integer numeroMatricula;
 
     @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = false)
     private String nombresApellidos;
 
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
+    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Integer dni;
 
     @Column(name = "categoria", updatable = true, nullable = false, length = 36)

@@ -12,10 +12,10 @@ import java.time.LocalDate;
 @Builder
 public class CuotaDTO {
     private String idCuota;
-    private String numeroCuota;
+    private String numeroComprobante;
     private String monto;
     private String metodoPago;
-    private String numeroFactura;
+    private String anioFactura;
     private String numeroMatriculado;
     private String fechaPago;
     private LocalDate fechaPagoLocalDate;

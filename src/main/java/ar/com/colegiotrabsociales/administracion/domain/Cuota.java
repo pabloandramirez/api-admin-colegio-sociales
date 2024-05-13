@@ -27,10 +27,10 @@ public class Cuota {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID uuid;
 
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Integer numero;
+    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
+    private Integer numeroComprobante;
 
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
+    @Column(columnDefinition = "DOUBLE PRECISION", updatable = true, nullable = false)
     private Double monto;
 
     private LocalDate fechaPago;

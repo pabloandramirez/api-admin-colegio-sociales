@@ -13,7 +13,6 @@ import java.util.List;
 @Builder
 public class FacturaDTO {
     private String idFactura;
-    private String numeroFactura;
     private String monto;
     private Double montoDouble;
     private String saldo;

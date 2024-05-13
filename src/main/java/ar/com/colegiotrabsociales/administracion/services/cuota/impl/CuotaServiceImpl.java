@@ -29,20 +29,20 @@ public class CuotaServiceImpl implements CuotaService {
 
     private CuotaRepository cuotaRepository;
 
-    private FacturaRepository facturaRepository;
-
     private MatriculadoRepository matriculadoRepository;
 
     @Override
     public Cuota crearCuota(CuotaDTO cuotaDTO) throws NotFoundException {
         Cuota cuota = cuotaMapper.cuotaDTOtoCuota(cuotaDTO);
-        Optional<Factura> facturaOptional = facturaRepository.
-                findByNumero(Long.valueOf(cuotaDTO.getNumeroFactura()));
         Optional<Matriculado> matriculadoOptional = matriculadoRepository
                 .findByNumeroMatricula(Long.valueOf(cuotaDTO.getNumeroMatriculado()));
-        if (facturaOptional.isPresent() || matriculadoOptional.isPresent()){
-            facturaOptional.ifPresent(cuota::setFactura);
-            matriculadoOptional.ifPresent(cuota::setMatriculado);
+        if (matriculadoOptional.isPresent()){
+            for (Factura factura: matriculadoOptional.get().getFacturas()){
+                if (Objects.equals(factura.getAnio(), Integer.valueOf(cuotaDTO.getAnioFactura()))){
+                    cuota.setMatriculado(matriculadoOptional.get());
+                    cuota.setFactura(factura);
+                }
+            }
             return cuotaRepository.save(cuota);
         } else {
             throw new NotFoundException();
@@ -111,17 +111,20 @@ public class CuotaServiceImpl implements CuotaService {
     }
 
     private void actualizacionCuota(Cuota cuota, CuotaDTO cuotaActualizada){
-        if (cuotaActualizada.getNumeroCuota() != null && cuotaActualizada.getNumeroCuota().isBlank()){
-            cuota.setNumero(Integer.parseInt(cuotaActualizada.getNumeroCuota()));
+        if (cuotaActualizada.getNumeroComprobante() != null && cuotaActualizada.getNumeroComprobante().isBlank()){
+            cuota.setNumeroComprobante(Integer.parseInt(cuotaActualizada.getNumeroComprobante()));
         }
 
         if (cuotaActualizada.getMonto() != null && cuotaActualizada.getMonto().isBlank()){
             cuota.setMonto(Double.valueOf(cuotaActualizada.getMonto()));
         }
 
-        if (cuotaActualizada.getNumeroFactura() != null && !cuotaActualizada.getNumeroFactura().isBlank()){
-            Optional<Factura> facturaOptional = facturaRepository.findByNumero(Long.valueOf(cuotaActualizada.getNumeroFactura()));
-            facturaOptional.ifPresent(cuota::setFactura);
+        if (cuotaActualizada.getAnioFactura() != null && !cuotaActualizada.getAnioFactura().isBlank()){
+            for (Factura factura: cuota.getMatriculado().getFacturas()){
+                if (Objects.equals(factura.getAnio(), Integer.valueOf(cuotaActualizada.getAnioFactura()))){
+                    cuota.setFactura(factura);
+                }
+            }
         }
 
         if (cuotaActualizada.getNumeroMatriculado() != null && !cuotaActualizada.getNumeroMatriculado().isBlank()){

@@ -67,6 +67,19 @@ public class MatriculadoController {
         return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniInteger, numeroMatriculaInteger, nombreApellido);
     }
 
+    @GetMapping("/paginado")
+    public List<MatriculadoDTO> getMatriculadosPaginado(@RequestParam(name = "pagina", required = true) int pagina,
+                                                @RequestParam(name = "matriculadosPorPagina", required = true) int matriculadosPorPagina){
+        log.info("Se muestra los matriculados en formato de paginado");
+        // Calcular el índice de inicio de los matriculados en función de la página y la cantidad de matriculados por página
+        int indiceInicio = (pagina - 1) * matriculadosPorPagina;
+
+        // Obtener las noticias para la página actual
+
+        return matriculadoService.getMatriculadosPaginados(indiceInicio, matriculadosPorPagina);
+
+    }
+
     @GetMapping("/{usuario}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<MatriculadoDTO> getMatriculadoPorUsuario(@PathVariable(value = "usuario") String usuario){

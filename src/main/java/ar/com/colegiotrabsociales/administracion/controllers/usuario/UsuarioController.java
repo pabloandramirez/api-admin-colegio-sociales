@@ -41,7 +41,7 @@ public class UsuarioController {
 
     //POST
     @PostMapping("/crearUsuario")
-    @PreAuthorize("hasRole('ADMIN')")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     public ResponseEntity<Void> crearUsuario(@RequestBody UsuarioDTO usuarioDTO){
         log.info("Creando un nuevo usuario");
         Usuario usuarioCreado = usuarioService.crearUsuario(usuarioDTO);

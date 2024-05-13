@@ -12,7 +12,6 @@ import java.util.UUID;
 @Repository
 public interface FacturaRepository extends JpaRepository<Factura, UUID> {
 
-    Optional<Factura> findByNumero(Long numero);
 
     List<Factura> findByMatriculadoDniContainingAndMatriculadoNumeroMatriculaContaining(Serializable serializable, Serializable serializable1);
 }

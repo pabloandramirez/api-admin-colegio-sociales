@@ -28,7 +28,6 @@ public class FacturaMapperImpl implements FacturaMapper {
     public Factura facturaDTOtoFactura(FacturaDTO facturaDTO) {
         return Factura.builder()
                 .uuid(UUID.randomUUID())
-                .numero(Integer.parseInt(facturaDTO.getNumeroFactura().trim()))
                 .montoFactura(Double.valueOf(facturaDTO.getMonto()))
                 .anio(Integer.parseInt(facturaDTO.getAnio().trim()))
                 .enConvenio(getConvenio(facturaDTO.getEnConvenio()))
@@ -43,7 +42,6 @@ public class FacturaMapperImpl implements FacturaMapper {
         cuotaDTOList.sort(Comparator.comparing(CuotaDTO::getFechaPagoLocalDate).reversed());
         return FacturaDTO.builder()
                 .idFactura(String.valueOf(factura.getUuid()))
-                .numeroFactura(String.valueOf(factura.getNumero()))
                 .numeroMatriculado(String.valueOf(factura.getMatriculado().getNumeroMatricula()))
                 .monto(factura.getMontoFactura().toString())
                 .saldo(saldoFactura(factura))

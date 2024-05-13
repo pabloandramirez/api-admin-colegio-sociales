@@ -12,7 +12,5 @@ import java.util.UUID;
 @Repository
 public interface CuotaRepository extends JpaRepository<Cuota, UUID> {
 
-    Optional<Cuota> findByNumero(Long numero);
-
     List<Cuota> findByMatriculadoDniContainingAndMatriculadoNumeroMatriculaContaining(Serializable serializable, Serializable serializable1);
 }

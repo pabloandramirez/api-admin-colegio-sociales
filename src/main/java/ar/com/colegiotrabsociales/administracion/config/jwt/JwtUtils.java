@@ -24,9 +24,10 @@ public class JwtUtils {
     private String timeExpiration;
 
     //Generar token de acceso
-    public String generateAccessToken(String username){
+    public String generateAccessToken(String username, String role){
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(timeExpiration)))
                 .signWith(getSignatureKey(), SignatureAlgorithm.HS256)
@@ -54,6 +55,7 @@ public class JwtUtils {
         return getClaim(token, Claims::getSubject);
     }
 
+
     //Obtener un solo claim
     public <T> T getClaim(String token, Function<Claims, T> claimsTFunction){
         Claims claims = extractAllClaims(token);
@@ -75,18 +77,13 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public boolean validateJwtToken(String authToken) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
-            return true;
-        } catch (JwtException e) {
-            // Maneja las excepciones de JWT aquí
-            return false;
-        }
-    }
-
-    public String getUserNameFromJwtToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+    //Obtener role
+    public String getRoleFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().
+                setSigningKey(getSignatureKey()).
+                build().
+                parseClaimsJws(token).
+                getBody();
+        return (String) claims.get("role");
     }
 }

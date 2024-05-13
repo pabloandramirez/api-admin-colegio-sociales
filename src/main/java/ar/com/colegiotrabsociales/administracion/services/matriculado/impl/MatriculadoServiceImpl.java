@@ -118,6 +118,24 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     }
 
     @Override
+    public List<MatriculadoDTO> getMatriculadosPaginados(int indiceInicio, int matriculadosPorPagina) {
+        // Obtener todas las noticias desde la base de datos
+        List<MatriculadoDTO> todosLosMatriculados = new ArrayList<>(); // Suponiendo que utilizas Spring Data JPA
+
+        for (Matriculado matriculado: matriculadoRepository.findAll()) {
+            todosLosMatriculados.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+        }
+
+        todosLosMatriculados.sort(Comparator.comparing(MatriculadoDTO::getNumeroMatricula));
+
+        // Calcular el índice final de las noticias en función de la página y la cantidad de noticias por página
+        int indiceFinal = Math.min(indiceInicio + matriculadosPorPagina, todosLosMatriculados.size());
+
+        // Devolver las noticias correspondientes a la página solicitada
+        return todosLosMatriculados.subList(indiceInicio, indiceFinal);
+    }
+
+    @Override
     public Optional<MatriculadoDTO> actualizarMatriculado(UUID idMatriculado, MatriculadoDTO matriculadoActualizado) {
         Optional<Matriculado> matriculadoOptional = matriculadoRepository.findById(idMatriculado);
         if(matriculadoOptional.isPresent()){

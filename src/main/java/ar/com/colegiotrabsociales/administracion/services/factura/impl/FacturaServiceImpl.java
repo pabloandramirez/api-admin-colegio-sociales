@@ -100,9 +100,6 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     private void actualizacionFactura(Factura factura, FacturaDTO facturaActualizada){
-        if (facturaActualizada.getNumeroFactura() != null && facturaActualizada.getNumeroFactura().isBlank()){
-            factura.setNumero(Integer.parseInt(facturaActualizada.getNumeroFactura().trim()));
-        }
 
         if (facturaActualizada.getEnConvenio() != null && facturaActualizada.getEnConvenio().isBlank()){
             factura.setEnConvenio(getConvenio(facturaActualizada.getEnConvenio()));

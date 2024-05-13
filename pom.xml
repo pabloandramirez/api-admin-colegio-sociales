@@ -73,20 +73,9 @@
 		</dependency>
 		<!--BASE DE DATOS-->
 		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc11-production</artifactId>
-			<version>21.5.0.0</version>
-			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<groupId>com.oracle.database.ha</groupId>
-					<artifactId>simplefan</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.oracle.database.ha</groupId>
-					<artifactId>ons</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.2</version>
 		</dependency>
 	</dependencies>
 

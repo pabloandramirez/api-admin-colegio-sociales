@@ -18,7 +18,7 @@ public class CuotaMapperImpl implements CuotaMapper {
     public Cuota cuotaDTOtoCuota(CuotaDTO cuotaDTO) {
         return Cuota.builder()
                 .uuid(UUID.randomUUID())
-                .numero(Integer.parseInt(cuotaDTO.getNumeroCuota().trim()))
+                .numeroComprobante(Integer.parseInt(cuotaDTO.getNumeroComprobante().trim()))
                 .monto(Double.valueOf(cuotaDTO.getMonto().trim()))
                 .metodoPago(getMetodoPago(cuotaDTO.getMetodoPago()))
                 .fechaPago(getLocalDate(cuotaDTO.getFechaPago()))
@@ -30,10 +30,10 @@ public class CuotaMapperImpl implements CuotaMapper {
     public CuotaDTO cuotaToCuotaDTO(Cuota cuota) {
         CuotaDTO.CuotaDTOBuilder builder = CuotaDTO.builder()
                 .idCuota(String.valueOf(cuota.getUuid()))
-                .numeroCuota(String.valueOf(cuota.getNumero()))
+                .numeroComprobante(String.valueOf(cuota.getNumeroComprobante()))
                 .monto(String.valueOf(cuota.getMonto()))
                 .metodoPago(getMetodoPago(cuota.getMetodoPago()))
-                .numeroFactura(String.valueOf(cuota.getFactura().getNumero()))
+                .anioFactura(String.valueOf(cuota.getFactura().getAnio()))
                 .numeroMatriculado(String.valueOf(cuota.getMatriculado().getNumeroMatricula()))
                 .fechaPago(getLocalDate(cuota.getFechaPago()))
                 .fechaPagoLocalDate(cuota.getFechaPago());

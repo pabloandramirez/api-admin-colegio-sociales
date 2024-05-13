@@ -29,16 +29,13 @@ public class Factura {
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     private UUID uuid;
 
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
-    private Integer numero;
-
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
+    @Column(columnDefinition = "DOUBLE PRECISION", updatable = true, nullable = false)
     private Double montoFactura;
 
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = true)
+    @Column(columnDefinition = "DOUBLE PRECISION", updatable = true, nullable = true)
     private Double saldo;
 
-    @Column(columnDefinition = "NUMBER", updatable = true, nullable = false)
+    @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Integer anio;
 
     @Column(name = "pago_estado", nullable = false, length = 36)
