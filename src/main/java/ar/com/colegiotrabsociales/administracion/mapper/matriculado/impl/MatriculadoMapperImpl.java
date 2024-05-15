@@ -55,8 +55,10 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .idMatriculado(String.valueOf(matriculado.getUuid()))
                 .dni(String.valueOf(matriculado.getDni()))
                 .nombresApellidos(matriculado.getNombresApellidos().toUpperCase())
+                .numeroMatriculaInt(matriculado.getNumeroMatricula())
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
+                .email(matriculado.getEmail())
                 .facturas(facturaDTOList);
 
         if(matriculado.getUsuario() != null){

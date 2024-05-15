@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum BecadoMonotributista {
+    NO_CORRESPONDE("NO CORRESPONDE"),
     BECADO("BECADO"),
     MONOTRIBUTISTA("MONOTRIBUTISTA");
 

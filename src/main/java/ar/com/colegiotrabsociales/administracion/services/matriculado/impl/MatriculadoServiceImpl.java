@@ -126,7 +126,7 @@ public class MatriculadoServiceImpl implements MatriculadoService {
             todosLosMatriculados.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
         }
 
-        todosLosMatriculados.sort(Comparator.comparing(MatriculadoDTO::getNumeroMatricula));
+        todosLosMatriculados.sort(Comparator.comparing(MatriculadoDTO::getNumeroMatriculaInt));
 
         // Calcular el índice final de las noticias en función de la página y la cantidad de noticias por página
         int indiceFinal = Math.min(indiceInicio + matriculadosPorPagina, todosLosMatriculados.size());
@@ -180,7 +180,7 @@ public class MatriculadoServiceImpl implements MatriculadoService {
             matriculado.setMatriculadoEstado(getMatriculadoEstado(matriculadoActualizado.getMatriculadoEstado()));
         }
 
-        if (matriculadoActualizado.getLinkLegajo() != null && !matriculadoActualizado.getLinkLegajo().isBlank()){
+        if (!matriculadoActualizado.getLinkLegajo().isBlank()){
             matriculado.setLinkLegajo(matriculadoActualizado.getLinkLegajo());
         }
     }

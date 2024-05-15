@@ -60,6 +60,9 @@ public class Matriculado {
     @OneToOne(mappedBy = "matriculado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Usuario usuario;
 
+    @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = true)
+    private String email;
+
     public List<Factura> getFacturas(){
         List<Factura> facturas = this.facturas;
         facturas.sort(Comparator.comparing(Factura::getAnio).reversed());

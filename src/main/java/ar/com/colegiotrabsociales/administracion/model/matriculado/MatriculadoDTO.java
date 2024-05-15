@@ -13,6 +13,7 @@ import java.util.List;
 public class MatriculadoDTO {
     private String idMatriculado;
     private String numeroMatricula;
+    private Integer numeroMatriculaInt;
     private String nombresApellidos;
     private String dni;
     private String categoria;
@@ -21,6 +22,7 @@ public class MatriculadoDTO {
     private List<FacturaDTO> facturas;
     private String usuario;
     private String linkLegajo;
+    private String email;
 }
 
 
