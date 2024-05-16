@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class UsuarioMapperImpl implements UsuarioMapper {
 
     private PasswordEncoder passwordEncoder;
+
     private final MatriculadoRepository matriculadoRepository;
 
     @Override

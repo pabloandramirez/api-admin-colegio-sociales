@@ -61,7 +61,6 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
                 .email(matriculado.getEmail())
-                .telContacto(matriculado.getTelContacto().toString())
                 .facturas(facturaDTOList);
 
         if(matriculado.getUsuario() != null){
@@ -74,6 +73,14 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
 
         if (matriculado.getMatriculadoEstado() != null){
             builder.matriculadoEstado(actualizarMatriculadoEstado(matriculado));
+        }
+
+        if(matriculado.getTelContacto() != null){
+            builder.telContacto(matriculado.getTelContacto().toString());
+        }
+
+        if (matriculado.getEmail() != null){
+            builder.email(matriculado.getEmail());
         }
 
         if (matriculado.getLinkLegajo() != null){

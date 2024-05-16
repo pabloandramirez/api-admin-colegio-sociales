@@ -9,6 +9,7 @@ import ar.com.colegiotrabsociales.administracion.repository.matriculado.Matricul
 import ar.com.colegiotrabsociales.administracion.repository.usuario.UsuarioRepository;
 import ar.com.colegiotrabsociales.administracion.services.usuario.UsuarioService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
+
+    private PasswordEncoder passwordEncoder;
+
     private final UsuarioMapper usuarioMapper;
 
     private final UsuarioRepository usuarioRepository;
@@ -84,6 +88,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         if (usuarioActualizadoDTO.getRoles() != null && !usuarioActualizadoDTO.getRoles().isEmpty()){
             usuario.setRoles(usuarioActualizadoDTO.getRoles().stream().map(Role::valueOf).collect(Collectors.toSet()));
+        }
+
+        if (usuarioActualizadoDTO.getPassword() != null && !usuarioActualizadoDTO.getPassword().isEmpty()){
+            usuario.setPassword(passwordEncoder.encode(usuarioActualizadoDTO.getPassword()));
+        }
+
+        if (usuarioActualizadoDTO.getNumeroMatriculado() != null && !usuarioActualizadoDTO.getNumeroMatriculado().isEmpty()){
+            Optional<Matriculado> matriculadoOptional = matriculadoRepository.findByNumeroMatricula(Long.valueOf(usuarioActualizadoDTO.getNumeroMatriculado()));
+            matriculadoOptional.ifPresent(usuario::setMatriculado);
         }
     }
 }
