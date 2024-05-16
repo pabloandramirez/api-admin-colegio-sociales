@@ -180,6 +180,14 @@ public class MatriculadoServiceImpl implements MatriculadoService {
             matriculado.setMatriculadoEstado(getMatriculadoEstado(matriculadoActualizado.getMatriculadoEstado()));
         }
 
+        if (matriculadoActualizado.getEmail() != null && !matriculadoActualizado.getEmail().isBlank()){
+            matriculado.setEmail(matriculadoActualizado.getEmail());
+        }
+
+        if (matriculadoActualizado.getTelContacto() != null && !matriculadoActualizado.getTelContacto().isBlank()){
+            matriculado.setTelContacto(Integer.valueOf(matriculadoActualizado.getTelContacto()));
+        }
+
         if (!matriculadoActualizado.getLinkLegajo().isBlank()){
             matriculado.setLinkLegajo(matriculadoActualizado.getLinkLegajo());
         }

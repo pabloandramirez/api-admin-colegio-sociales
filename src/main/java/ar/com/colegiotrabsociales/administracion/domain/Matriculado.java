@@ -63,6 +63,9 @@ public class Matriculado {
     @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = true)
     private String email;
 
+    @Column(columnDefinition = "BIGINT", updatable = true, nullable = true)
+    private Integer telContacto;
+
     public List<Factura> getFacturas(){
         List<Factura> facturas = this.facturas;
         facturas.sort(Comparator.comparing(Factura::getAnio).reversed());

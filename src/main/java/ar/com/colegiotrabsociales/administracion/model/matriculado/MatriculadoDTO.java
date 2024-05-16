@@ -23,6 +23,7 @@ public class MatriculadoDTO {
     private String usuario;
     private String linkLegajo;
     private String email;
+    private String telContacto;
 }
 
 

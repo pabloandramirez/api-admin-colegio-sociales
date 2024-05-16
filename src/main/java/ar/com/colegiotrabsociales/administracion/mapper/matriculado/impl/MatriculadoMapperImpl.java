@@ -38,6 +38,8 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .numeroMatricula(Integer.parseInt(matriculadoDTO.getNumeroMatricula().trim()))
                 .categoria(getCategoria(matriculadoDTO.getCategoria().trim()))
                 .matriculadoEstado(getMatriculadoEstado(matriculadoDTO.getMatriculadoEstado()))
+                .email(matriculadoDTO.getEmail())
+                .telContacto(Integer.valueOf(matriculadoDTO.getTelContacto()))
                 .linkLegajo(matriculadoDTO.getLinkLegajo());
 
         if (matriculadoDTO.getCategoria().equalsIgnoreCase(String.valueOf(Categoria.B))) {
@@ -59,6 +61,7 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
                 .email(matriculado.getEmail())
+                .telContacto(matriculado.getTelContacto().toString())
                 .facturas(facturaDTOList);
 
         if(matriculado.getUsuario() != null){
