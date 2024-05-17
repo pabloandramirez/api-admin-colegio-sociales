@@ -34,7 +34,10 @@ public class Matriculado {
     private Integer numeroMatricula;
 
     @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = false)
-    private String nombresApellidos;
+    private String nombres;
+
+    @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = false)
+    private String apellidos;
 
     @Column(columnDefinition = "BIGINT", updatable = true, nullable = false)
     private Integer dni;
@@ -58,6 +61,7 @@ public class Matriculado {
     private String linkLegajo;
 
     @OneToOne(mappedBy = "matriculado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_uuid")
     private Usuario usuario;
 
     @Column(length = 150, columnDefinition = "varchar(150)", updatable = true, nullable = true)

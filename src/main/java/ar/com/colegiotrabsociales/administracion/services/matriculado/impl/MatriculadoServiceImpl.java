@@ -47,17 +47,18 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     }
 
     @Override
-    public List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(Integer dni, Integer numero, String nombreApellido) {
+    public List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(Integer dni, Integer numero, String nombre, String apellidos) {
 
         List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
 
         for (Matriculado matriculado : matriculadoRepository.findAll()) {
             boolean matchDni = dni == null || matriculado.getDni().toString().contains(dni.toString());
             boolean matchNumero = numero == null || matriculado.getNumeroMatricula().toString().contains(numero.toString());
-            boolean matchNombreApellido = nombreApellido == null || nombreApellido.isBlank() || matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim());
+            boolean matchNombres = nombre == null || nombre.isBlank() || matriculado.getNombres().contains(nombre.toLowerCase().trim());
+            boolean matchApellidos = apellidos == null || apellidos.isBlank() || matriculado.getApellidos().contains(apellidos.toLowerCase().trim());
 
             // Si hay solo un filtro, o si todos los filtros coinciden, agregamos el DTO
-            if ((dni == null || matchDni) && (numero == null || matchNumero) && (nombreApellido == null || matchNombreApellido)) {
+            if ((dni == null || matchDni) && (numero == null || matchNumero) && (nombre == null || matchNombres) && (apellidos == null || matchApellidos)) {
                 matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
             }
         }
@@ -160,8 +161,12 @@ public class MatriculadoServiceImpl implements MatriculadoService {
             matriculado.setDni(Integer.parseInt(matriculadoActualizado.getDni().trim()));
         }
 
-        if (matriculadoActualizado.getNombresApellidos() != null && matriculadoActualizado.getNombresApellidos().isBlank()){
-            matriculado.setNombresApellidos(matriculadoActualizado.getNombresApellidos());
+        if (matriculadoActualizado.getNombres() != null && matriculadoActualizado.getNombres().isBlank()){
+            matriculado.setNombres(matriculadoActualizado.getNombres());
+        }
+
+        if (matriculadoActualizado.getApellidos() != null && matriculadoActualizado.getApellidos().isBlank()){
+            matriculado.setApellidos(matriculadoActualizado.getApellidos());
         }
 
         if (matriculadoActualizado.getNumeroMatricula() != null && !matriculadoActualizado.getNumeroMatricula().isBlank()){

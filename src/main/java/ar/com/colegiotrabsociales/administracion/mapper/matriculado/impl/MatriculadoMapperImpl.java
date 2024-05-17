@@ -34,7 +34,8 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
         Matriculado.MatriculadoBuilder builder = Matriculado.builder()
                 .uuid(UUID.randomUUID())
                 .dni(Integer.parseInt(matriculadoDTO.getDni().trim()))
-                .nombresApellidos(matriculadoDTO.getNombresApellidos().trim().toLowerCase())
+                .nombres(matriculadoDTO.getNombres().trim().toUpperCase())
+                .apellidos(matriculadoDTO.getApellidos().toUpperCase())
                 .numeroMatricula(Integer.parseInt(matriculadoDTO.getNumeroMatricula().trim()))
                 .categoria(getCategoria(matriculadoDTO.getCategoria().trim()))
                 .matriculadoEstado(getMatriculadoEstado(matriculadoDTO.getMatriculadoEstado()))
@@ -56,8 +57,10 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
         MatriculadoDTO.MatriculadoDTOBuilder builder = MatriculadoDTO.builder()
                 .idMatriculado(String.valueOf(matriculado.getUuid()))
                 .dni(String.valueOf(matriculado.getDni()))
-                .nombresApellidos(matriculado.getNombresApellidos().toUpperCase())
+                .nombres(matriculado.getNombres())
+                .apellidos(matriculado.getApellidos())
                 .numeroMatriculaInt(matriculado.getNumeroMatricula())
+                .matriculadoEstado(getMatriculadoEstado(matriculado.getMatriculadoEstado()))
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
                 .email(matriculado.getEmail())
@@ -69,10 +72,6 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
 
         if (matriculado.getBecadoOMonotributista() != null) {
             builder.becadoOMonotributista(getBecadoMonotributista(matriculado.getBecadoOMonotributista()));
-        }
-
-        if (matriculado.getMatriculadoEstado() != null){
-            builder.matriculadoEstado(actualizarMatriculadoEstado(matriculado));
         }
 
         if(matriculado.getTelContacto() != null){

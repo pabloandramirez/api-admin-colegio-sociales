@@ -14,7 +14,8 @@ public class MatriculadoDTO {
     private String idMatriculado;
     private String numeroMatricula;
     private Integer numeroMatriculaInt;
-    private String nombresApellidos;
+    private String nombres;
+    private String apellidos;
     private String dni;
     private String categoria;
     private String becadoOMonotributista;

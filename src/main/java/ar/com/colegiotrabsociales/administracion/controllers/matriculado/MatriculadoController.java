@@ -28,14 +28,17 @@ public class MatriculadoController {
     //GET
     @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<MatriculadoDTO> getMatriculadoPorNombreNumMatriculaDNI(@RequestParam(value = "nombreApellido", required = false)
-                                                                     String nombreApellido,
+    public List<MatriculadoDTO> getMatriculadoPorNombreNumMatriculaDNI(@RequestParam(value = "nombres", required = false)
+                                                                     String nombres,
+                                                                       @RequestParam(value = "apellidos", required = false)
+                                                                       String apellidos,
                                                                  @RequestParam(value = "dni", required = false)
                                                                  String dni,
                                                                  @RequestParam(value = "numeroMatricula", required = false)
                                                                      String numeroMatricula){
         log.info("Muestra el/los matrticulado/s por numero de matricula y/o numero de dni y/o nombre y/o apellido");
-        if ((nombreApellido == null || nombreApellido.isBlank()) &&
+        if ((nombres == null || nombres.isBlank()) &&
+                (apellidos == null || apellidos.isBlank()) &&
                 (dni == null || dni.isBlank()) &&
                 (numeroMatricula == null || numeroMatricula.isBlank())) {
             return matriculadoService.conseguirMatriculados();
@@ -64,7 +67,7 @@ public class MatriculadoController {
             }
         }
 
-        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniInteger, numeroMatriculaInteger, nombreApellido);
+        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniInteger, numeroMatriculaInteger, nombres, apellidos);
     }
 
     @GetMapping("/paginado")
