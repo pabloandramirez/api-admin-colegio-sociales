@@ -72,7 +72,7 @@ public class MatriculadoController {
 
     }
 
-    @GetMapping("/{usuario}")
+    @GetMapping("/getByUser/{usuario}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
     public List<MatriculadoDTO> getMatriculadoPorUsuario(@PathVariable(value = "usuario") String usuario){
         log.info("Muestra el matriculado por nombre de usuario");
@@ -81,6 +81,14 @@ public class MatriculadoController {
         }
 
         return matriculadoService.conseguirMatriculadoPorUsuario(usuario);
+    }
+
+    @GetMapping("/{idMatriculado}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public MatriculadoDTO getMatriculadoPorId(@PathVariable(value = "idMatriculado") UUID idMatriculado)
+            throws NotFoundException {
+        log.info("Muestra el matriculado mediant UUID");
+        return matriculadoService.getMatriculadoUUID(idMatriculado).orElseThrow(NotFoundException::new);
     }
 
 

@@ -47,6 +47,12 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     }
 
     @Override
+    public Optional<MatriculadoDTO> getMatriculadoUUID(UUID idMatriculado) {
+        Optional<Matriculado> optionalMatriculado = matriculadoRepository.findById(idMatriculado);
+        return optionalMatriculado.map(matriculadoMapper::matriculadoToMatriculadoDTO);
+    }
+
+    @Override
     public List<MatriculadoDTO> conseguirMatriculadoPorDNI(Integer dni, Integer indiceInicio, Integer matriculadosPorPagina) {
 
         List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
