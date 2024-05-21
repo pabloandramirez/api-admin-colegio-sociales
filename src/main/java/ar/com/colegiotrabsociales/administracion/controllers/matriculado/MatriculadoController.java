@@ -28,26 +28,25 @@ public class MatriculadoController {
     //GET
     @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<MatriculadoDTO> getMatriculadoPorNombreNumMatriculaDNI(@RequestParam(value = "nombres", required = false)
-                                                                     String nombres,
-                                                                       @RequestParam(value = "apellidos", required = false)
-                                                                       String apellidos,
-                                                                 @RequestParam(value = "dni", required = false)
-                                                                 String dni,
-                                                                 @RequestParam(value = "numeroMatricula", required = false)
-                                                                     String numeroMatricula){
-        log.info("Muestra el/los matrticulado/s por numero de matricula y/o numero de dni y/o nombre y/o apellido");
-        if ((nombres == null || nombres.isBlank()) &&
-                (apellidos == null || apellidos.isBlank()) &&
-                (dni == null || dni.isBlank()) &&
-                (numeroMatricula == null || numeroMatricula.isBlank())) {
+    public List<MatriculadoDTO> getMatriculadoDNI(@RequestParam(name = "dni", required = false) String dni,
+                                                  @RequestParam(name = "pagina", required = false) Integer pagina,
+                                                  @RequestParam(name = "matriculadosPorPagina", required = false) Integer matriculadosPorPagina){
+        log.info("Muestra los matriculados por DNI con la opcion de paginado");
+        if (dni == null || dni.isBlank()) {
             return matriculadoService.conseguirMatriculados();
         }
 
-        Integer dniInteger = null;
-        Integer numeroMatriculaInteger = null;
+        Integer indiceInicio = null;
+        if(pagina!=null && !pagina.toString().isBlank()){
+            indiceInicio = (pagina - 1) * matriculadosPorPagina;
+        } else {
+            indiceInicio = 0;
+        }
 
-        if (dni != null && !dni.isEmpty()) {
+
+        Integer dniInteger = null;
+
+        if (!dni.isEmpty()) {
             try {
                 dniInteger = Integer.parseInt(dni.trim());
             } catch (NumberFormatException e) {
@@ -57,17 +56,7 @@ public class MatriculadoController {
             }
         }
 
-        if (numeroMatricula != null && !numeroMatricula.isEmpty()) {
-            try {
-                numeroMatriculaInteger = Integer.parseInt(numeroMatricula.trim());
-            } catch (NumberFormatException e) {
-                log.error("Error al convertir numeroMatricula a Long: {}", e.getMessage());
-                // Puedes devolver una lista vacía o manejar el error de otra forma
-                return Collections.emptyList();
-            }
-        }
-
-        return matriculadoService.conseguirMatriculadoPorDNIyNumeroyNombreApellido(dniInteger, numeroMatriculaInteger, nombres, apellidos);
+        return matriculadoService.conseguirMatriculadoPorDNI(dniInteger, indiceInicio, matriculadosPorPagina);
     }
 
     @GetMapping("/paginado")

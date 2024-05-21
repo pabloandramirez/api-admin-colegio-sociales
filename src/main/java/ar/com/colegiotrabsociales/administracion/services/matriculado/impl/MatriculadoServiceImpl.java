@@ -47,62 +47,26 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     }
 
     @Override
-    public List<MatriculadoDTO> conseguirMatriculadoPorDNIyNumeroyNombreApellido(Integer dni, Integer numero, String nombre, String apellidos) {
+    public List<MatriculadoDTO> conseguirMatriculadoPorDNI(Integer dni, Integer indiceInicio, Integer matriculadosPorPagina) {
 
         List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
 
         for (Matriculado matriculado : matriculadoRepository.findAll()) {
             boolean matchDni = dni == null || matriculado.getDni().toString().contains(dni.toString());
-            boolean matchNumero = numero == null || matriculado.getNumeroMatricula().toString().contains(numero.toString());
-            boolean matchNombres = nombre == null || nombre.isBlank() || matriculado.getNombres().contains(nombre.toLowerCase().trim());
-            boolean matchApellidos = apellidos == null || apellidos.isBlank() || matriculado.getApellidos().contains(apellidos.toLowerCase().trim());
 
             // Si hay solo un filtro, o si todos los filtros coinciden, agregamos el DTO
-            if ((dni == null || matchDni) && (numero == null || matchNumero) && (nombre == null || matchNombres) && (apellidos == null || matchApellidos)) {
+            if (dni == null || matchDni) {
                 matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
             }
         }
 
-        return matriculadoDTOSList;
-        /*List<MatriculadoDTO> matriculadoDTOSList = new ArrayList<>();
-        for (Matriculado matriculado : matriculadoRepository.findAll()) {
-            if (dni == null) {
-                if (numero == null){
-                    if (nombreApellido!=null && !nombreApellido.isBlank()){
-                        if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())){
-                            matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                        }
-                    }
-                } else if (nombreApellido==null || nombreApellido.isBlank()) {
-                    if (matriculado.getNumeroMatricula().toString().contains(numero.toString())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                } else{
-                    if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())
-                        && matriculado.getNumeroMatricula().toString().contains(numero.toString())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                }
-            } else if (numero == null) {
-                if (nombreApellido==null || nombreApellido.isBlank()) {
-                    if (matriculado.getDni().toString().contains(dni.toString())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                } else{
-                    if (matriculado.getNombresApellidos().contains(nombreApellido.toLowerCase().trim())
-                            && matriculado.getDni().toString().contains(dni.toString())){
-                        matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                    }
-                }
-            } else {
-                if (matriculado.getDni().toString().contains(dni.toString())
-                        && matriculado.getNumeroMatricula().toString().contains(numero.toString())){
-                    matriculadoDTOSList.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
-                }
-            }
+        matriculadoDTOSList.sort(Comparator.comparing(MatriculadoDTO::getNumeroMatriculaInt));
 
-        }
-            return matriculadoDTOSList;*/
+        // Calcular el índice final de las noticias en función de la página y la cantidad de noticias por página
+        int indiceFinal = Math.min(indiceInicio + matriculadosPorPagina, matriculadoDTOSList.size());
+
+        // Devolver las noticias correspondientes a la página solicitada
+        return matriculadoDTOSList.subList(indiceInicio, indiceFinal);
     }
 
     @Override
@@ -190,7 +154,7 @@ public class MatriculadoServiceImpl implements MatriculadoService {
         }
 
         if (matriculadoActualizado.getTelContacto() != null && !matriculadoActualizado.getTelContacto().isBlank()){
-            matriculado.setTelContacto(Integer.valueOf(matriculadoActualizado.getTelContacto()));
+            matriculado.setTelContacto(Long.valueOf(matriculadoActualizado.getTelContacto()));
         }
 
         if (!matriculadoActualizado.getLinkLegajo().isBlank()){

@@ -42,6 +42,25 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+    public List<Factura> crearFacturas(FacturaDTO facturaDTO, String categoria, String becadoMono)
+            throws NotFoundException {
+        List<Matriculado> matriculadoList = matriculadoRepository.findAll();
+        List<Factura> facturas = new ArrayList<>();
+        for (Matriculado matriculado:
+             matriculadoList) {
+            if (matriculado.getCategoria().getCategoria().equals(categoria.toUpperCase())){
+                if (matriculado.getBecadoOMonotributista().getBecadoMonotributista().equalsIgnoreCase(becadoMono)){
+                    Factura factura = crearFactura(facturaDTO);
+                    factura.setMatriculado(matriculado);
+                    facturaRepository.save(factura);
+                    facturas.add(factura);
+                }
+            }
+        }
+        return facturas;
+    }
+
+    @Override
     public List<FacturaDTO> verFacturas() {
         List<FacturaDTO> facturaDTOList = new ArrayList<>();
         for (Factura factura: facturaRepository.findAll()) {

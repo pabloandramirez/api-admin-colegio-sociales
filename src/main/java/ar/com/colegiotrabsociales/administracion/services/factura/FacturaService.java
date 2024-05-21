@@ -16,6 +16,8 @@ public interface FacturaService {
     //POST
     Factura crearFactura(@RequestBody FacturaDTO facturaDTO) throws NotFoundException;
 
+    List<Factura> crearFacturas(@RequestBody FacturaDTO facturaDTO, String categoria, String becadoMono) throws NotFoundException;
+
     //GET
     List<FacturaDTO> verFacturas();
     List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Long dni, Long numeroMatricula);

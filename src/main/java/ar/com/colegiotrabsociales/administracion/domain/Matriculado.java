@@ -68,7 +68,7 @@ public class Matriculado {
     private String email;
 
     @Column(columnDefinition = "BIGINT", updatable = true, nullable = true)
-    private Integer telContacto;
+    private Long telContacto;
 
     public List<Factura> getFacturas(){
         List<Factura> facturas = this.facturas;

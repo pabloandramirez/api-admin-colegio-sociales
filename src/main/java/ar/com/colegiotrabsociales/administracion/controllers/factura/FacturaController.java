@@ -1,6 +1,7 @@
 package ar.com.colegiotrabsociales.administracion.controllers.factura;
 
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
+import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
 import ar.com.colegiotrabsociales.administracion.services.factura.FacturaService;
@@ -49,6 +50,29 @@ public class FacturaController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/" + facturaCreada.getUuid());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/crearFacturas")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> crearFacturas(@RequestBody FacturaDTO facturaDTO,
+                                             @RequestParam(name = "categoria", required = true) String categoria,
+                                              @RequestParam(name = "becadoMono", required = false) String becadoMono)
+            throws NotFoundException {
+        log.info("Se crea una nueva factura");
+
+        String becadoMonoCorreccion;
+
+        if (becadoMono==null || becadoMono.isBlank()){
+            becadoMonoCorreccion = "NO CORRESPONDE";
+        } else {
+            becadoMonoCorreccion = becadoMono;
+        }
+
+        List<Factura> facturasCreadas = facturaService.crearFacturas(facturaDTO, categoria, becadoMonoCorreccion);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Created", "True");
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 

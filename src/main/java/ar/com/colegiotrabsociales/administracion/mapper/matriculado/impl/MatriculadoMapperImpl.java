@@ -38,13 +38,26 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .apellidos(matriculadoDTO.getApellidos().toUpperCase())
                 .numeroMatricula(Integer.parseInt(matriculadoDTO.getNumeroMatricula().trim()))
                 .categoria(getCategoria(matriculadoDTO.getCategoria().trim()))
-                .matriculadoEstado(getMatriculadoEstado(matriculadoDTO.getMatriculadoEstado()))
-                .email(matriculadoDTO.getEmail())
-                .telContacto(Integer.valueOf(matriculadoDTO.getTelContacto()))
-                .linkLegajo(matriculadoDTO.getLinkLegajo());
+                .matriculadoEstado(getMatriculadoEstado(matriculadoDTO.getMatriculadoEstado()));
 
         if (matriculadoDTO.getCategoria().equalsIgnoreCase(String.valueOf(Categoria.B))) {
             builder.becadoOMonotributista(getBecadoMonotributista(matriculadoDTO.getBecadoOMonotributista()));
+        } else {
+            builder.becadoOMonotributista(BecadoMonotributista.NO_CORRESPONDE);
+        }
+
+        if(matriculadoDTO.getTelContacto() != null && !matriculadoDTO.getTelContacto().isEmpty()){
+            builder.telContacto(Long.valueOf(matriculadoDTO.getTelContacto()));
+        }
+
+        if (matriculadoDTO.getEmail() != null && !matriculadoDTO.getEmail().isEmpty()){
+            builder.email(matriculadoDTO.getEmail().trim());
+        }
+
+        if (matriculadoDTO.getLinkLegajo() != null && !matriculadoDTO.getLinkLegajo().isEmpty()){
+            builder.linkLegajo(matriculadoDTO.getLinkLegajo().trim());
+        } else {
+            builder.linkLegajo("");
         }
 
         return builder.build();
@@ -63,27 +76,36 @@ public class MatriculadoMapperImpl implements MatriculadoMapper {
                 .matriculadoEstado(getMatriculadoEstado(matriculado.getMatriculadoEstado()))
                 .numeroMatricula(String.valueOf(matriculado.getNumeroMatricula()))
                 .categoria(getCategoria(matriculado.getCategoria()))
-                .email(matriculado.getEmail())
                 .facturas(facturaDTOList);
 
         if(matriculado.getUsuario() != null){
             builder.usuario(matriculado.getUsuario().getUsuario());
+        } else{
+            builder.usuario("");
         }
 
         if (matriculado.getBecadoOMonotributista() != null) {
             builder.becadoOMonotributista(getBecadoMonotributista(matriculado.getBecadoOMonotributista()));
+        } else {
+            builder.becadoOMonotributista("NO CORRESPONDE");
         }
 
         if(matriculado.getTelContacto() != null){
-            builder.telContacto(matriculado.getTelContacto().toString());
+            builder.telContacto(String.valueOf(matriculado.getTelContacto()));
+        } else {
+            builder.telContacto("");
         }
 
         if (matriculado.getEmail() != null){
             builder.email(matriculado.getEmail());
+        } else{
+            builder.email("");
         }
 
         if (matriculado.getLinkLegajo() != null){
             builder.linkLegajo(matriculado.getLinkLegajo().trim());
+        } else{
+            builder.linkLegajo("");
         }
 
         return builder.build();
