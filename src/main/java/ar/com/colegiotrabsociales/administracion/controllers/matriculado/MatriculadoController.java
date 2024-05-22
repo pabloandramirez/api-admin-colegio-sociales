@@ -73,7 +73,7 @@ public class MatriculadoController {
     }
 
     @GetMapping("/getByUser/{usuario}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USUARIO')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<MatriculadoDTO> getMatriculadoPorUsuario(@PathVariable(value = "usuario") String usuario){
         log.info("Muestra el matriculado por nombre de usuario");
         if (matriculadoService.conseguirMatriculadoPorUsuario(usuario).isEmpty()){
@@ -81,6 +81,30 @@ public class MatriculadoController {
         }
 
         return matriculadoService.conseguirMatriculadoPorUsuario(usuario);
+    }
+
+    @GetMapping("/getByNumber/{numeroMatricula}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<MatriculadoDTO> getMatriculadoPorMatricula(@PathVariable(value = "numeroMatricula") String numeroMatricula){
+        log.info("Muestra el/los matriculado/s por numero de matricula");
+
+        Integer numeroMatriculaInteger = null;
+
+        if (!numeroMatricula.isEmpty()) {
+            try {
+                numeroMatriculaInteger = Integer.parseInt(numeroMatricula.trim());
+            } catch (NumberFormatException e) {
+                log.error("Error al convertir numero matricula a Integer: {}", e.getMessage());
+                // Puedes devolver una lista vacía o manejar el error de otra forma
+                return Collections.emptyList();
+            }
+        }
+
+        if (matriculadoService.getMatriculadosPorMatricula(numeroMatriculaInteger).isEmpty()){
+            log.info("No hay matriculados con este numero de matricula");
+        }
+
+        return matriculadoService.getMatriculadosPorMatricula(numeroMatriculaInteger);
     }
 
     @GetMapping("/{idMatriculado}")

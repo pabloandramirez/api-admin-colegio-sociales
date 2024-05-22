@@ -107,6 +107,17 @@ public class MatriculadoServiceImpl implements MatriculadoService {
     }
 
     @Override
+    public List<MatriculadoDTO> getMatriculadosPorMatricula(Integer numeroMatricula) {
+        List<MatriculadoDTO> matriculadoDTOS = new ArrayList<>();
+        for (Matriculado matriculado: matriculadoRepository.findAll()){
+            if (matriculado.getNumeroMatricula().equals(numeroMatricula)){
+                matriculadoDTOS.add(matriculadoMapper.matriculadoToMatriculadoDTO(matriculado));
+            }
+        }
+        return matriculadoDTOS;
+    }
+
+    @Override
     public Optional<MatriculadoDTO> actualizarMatriculado(UUID idMatriculado, MatriculadoDTO matriculadoActualizado) {
         Optional<Matriculado> matriculadoOptional = matriculadoRepository.findById(idMatriculado);
         if(matriculadoOptional.isPresent()){

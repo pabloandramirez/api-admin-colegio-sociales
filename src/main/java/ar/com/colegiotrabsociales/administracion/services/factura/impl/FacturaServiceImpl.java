@@ -50,9 +50,8 @@ public class FacturaServiceImpl implements FacturaService {
              matriculadoList) {
             if (matriculado.getCategoria().getCategoria().equals(categoria.toUpperCase())){
                 if (matriculado.getBecadoOMonotributista().getBecadoMonotributista().equalsIgnoreCase(becadoMono)){
+                    facturaDTO.setNumeroMatriculado(matriculado.getNumeroMatricula().toString());
                     Factura factura = crearFactura(facturaDTO);
-                    factura.setMatriculado(matriculado);
-                    facturaRepository.save(factura);
                     facturas.add(factura);
                 }
             }
