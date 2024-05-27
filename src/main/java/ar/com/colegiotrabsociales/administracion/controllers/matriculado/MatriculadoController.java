@@ -28,11 +28,11 @@ public class MatriculadoController {
     //GET
     @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<MatriculadoDTO> getMatriculadoDNI(@RequestParam(name = "dni", required = false) String dni,
+    public List<MatriculadoDTO> getMatriculadoDNI(@RequestParam(name = "dni", required = false) Integer dni,
                                                   @RequestParam(name = "pagina", required = false) Integer pagina,
                                                   @RequestParam(name = "matriculadosPorPagina", required = false) Integer matriculadosPorPagina){
         log.info("Muestra los matriculados por DNI con la opcion de paginado");
-        if (dni == null || dni.isBlank()) {
+        if (dni == null || dni.toString().isBlank()) {
             return matriculadoService.conseguirMatriculados();
         }
 
@@ -43,20 +43,7 @@ public class MatriculadoController {
             indiceInicio = 0;
         }
 
-
-        Integer dniInteger = null;
-
-        if (!dni.isEmpty()) {
-            try {
-                dniInteger = Integer.parseInt(dni.trim());
-            } catch (NumberFormatException e) {
-                log.error("Error al convertir dni a Long: {}", e.getMessage());
-                // Puedes devolver una lista vacía o manejar el error de otra forma
-                return Collections.emptyList();
-            }
-        }
-
-        return matriculadoService.conseguirMatriculadoPorDNI(dniInteger, indiceInicio, matriculadosPorPagina);
+        return matriculadoService.conseguirMatriculadoPorDNI(dni, indiceInicio, matriculadosPorPagina);
     }
 
     @GetMapping("/paginado")

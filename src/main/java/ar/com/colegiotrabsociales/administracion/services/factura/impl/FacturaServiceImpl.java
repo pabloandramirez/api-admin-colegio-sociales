@@ -7,6 +7,7 @@ import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
+import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
 import ar.com.colegiotrabsociales.administracion.repository.factura.FacturaRepository;
 import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import ar.com.colegiotrabsociales.administracion.services.factura.FacturaService;
@@ -70,31 +71,25 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
-    public List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Long dni, Long numeroMatricula) {
+    public List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Integer dni, Integer numeroMatricula, Integer indiceInicio, Integer facturasPorPagina) {
         List<FacturaDTO> facturaDTOList = new ArrayList<>();
-        List<Factura> facturas = facturaRepository.findByMatriculadoDniContainingAndMatriculadoNumeroMatriculaContaining(
-                dni != null ? dni : "",
-                numeroMatricula != null ? numeroMatricula : "");
-        for (Factura factura: facturas) {
-            facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
-        }
-        /*for (Factura factura: facturaRepository.findAll()) {
-            if (dni==null || dni.toString().isBlank()){
-                if (factura.getMatriculado().getNumeroMatricula().toString().contains(numeroMatricula.toString())){
-                    facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
-                }
-            } else if (numeroMatricula==null || numeroMatricula.toString().isBlank()){
-                if (factura.getMatriculado().getDni().toString().contains(dni.toString())){
-                    facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
-                }
-            } else{
-                if (factura.getMatriculado().getDni().toString().contains(dni.toString()) &&
-                        factura.getMatriculado().getNumeroMatricula().toString().contains(numeroMatricula.toString())){
-                    facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
-                }
+        for (Factura factura : facturaRepository.findAll()) {
+            boolean matchDni = dni == null || factura.getMatriculado().getDni().toString().contains(dni.toString());
+            boolean matchMatricula = numeroMatricula == null || factura.getMatriculado().getNumeroMatricula().toString().contains(numeroMatricula.toString());
+
+            // Si hay solo un filtro, o si todos los filtros coinciden, agregamos el DTO
+            if ((dni == null || matchDni) && (numeroMatricula==null || matchMatricula)) {
+                facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
             }
-        }*/
-        return facturaDTOList;
+        }
+
+        facturaDTOList.sort(Comparator.comparing(FacturaDTO::getNumeroMatriculadoInt));
+
+        // Calcular el índice final de las noticias en función de la página y la cantidad de noticias por página
+        int indiceFinal = Math.min(indiceInicio + facturasPorPagina, facturaDTOList.size());
+
+        // Devolver las noticias correspondientes a la página solicitada
+        return facturaDTOList.subList(indiceInicio, indiceFinal);
     }
 
     @Override

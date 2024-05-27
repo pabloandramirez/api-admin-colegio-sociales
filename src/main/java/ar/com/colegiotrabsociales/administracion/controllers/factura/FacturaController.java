@@ -28,17 +28,29 @@ public class FacturaController {
     //GET
     @GetMapping("/")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<FacturaDTO> getFacturas(@RequestParam(value = "dni", required = false) String dniMatriculado,
-                                        @RequestParam(value = "numeroMatricula", required = false) String numeroMatricula){
+    public List<FacturaDTO> getFacturas(@RequestParam(name = "dni", required = false) Integer dniMatriculado,
+                                        @RequestParam(name = "numeroMatricula", required = false) Integer numeroMatricula,
+                                        @RequestParam(name = "pagina", required = false) Integer pagina,
+                                        @RequestParam(name = "facturasPorPagina", required = false) Integer facturasPorPagina){
         log.info("Busca las facturas por dni y/o numero del matriculado");
-        if (dniMatriculado==null || dniMatriculado.isBlank() && numeroMatricula==null || numeroMatricula.isBlank()){
+
+        Integer indiceInicio = null;
+        if(pagina!=null && !pagina.toString().isBlank()){
+            indiceInicio = (pagina - 1) * facturasPorPagina;
+        } else {
+            indiceInicio = 0;
+        }
+
+        if ((dniMatriculado==null || dniMatriculado.toString().isBlank()) && (numeroMatricula==null || numeroMatricula.toString().isBlank())){
             return facturaService.verFacturas();
         } else {
-            if (facturaService.verFacturasPorDNIoNumeroMatricula(Long.valueOf(dniMatriculado), Long.valueOf(numeroMatricula)).isEmpty()){
+            if (facturaService.verFacturasPorDNIoNumeroMatricula(dniMatriculado, numeroMatricula, indiceInicio, facturasPorPagina).isEmpty()){
                 log.warn("No hay facturas con este dni y/o numero de matriculado");
             }
         }
-        return facturaService.verFacturasPorDNIoNumeroMatricula(Long.valueOf(dniMatriculado), Long.valueOf(numeroMatricula));
+
+
+        return facturaService.verFacturasPorDNIoNumeroMatricula(dniMatriculado, numeroMatricula, indiceInicio, facturasPorPagina);
     }
 
     //POST

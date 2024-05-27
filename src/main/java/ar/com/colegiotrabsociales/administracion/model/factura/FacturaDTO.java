@@ -20,6 +20,7 @@ public class FacturaDTO {
     private Integer anioInt;
     private String enConvenio;
     private String numeroMatriculado;
+    private Integer numeroMatriculadoInt;
     private String pagoEstado;
     private List<CuotaDTO> cuotas;
 }

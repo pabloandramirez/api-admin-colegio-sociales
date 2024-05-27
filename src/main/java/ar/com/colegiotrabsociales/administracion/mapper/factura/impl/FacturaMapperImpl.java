@@ -43,6 +43,7 @@ public class FacturaMapperImpl implements FacturaMapper {
         return FacturaDTO.builder()
                 .idFactura(String.valueOf(factura.getUuid()))
                 .numeroMatriculado(String.valueOf(factura.getMatriculado().getNumeroMatricula()))
+                .numeroMatriculadoInt(factura.getMatriculado().getNumeroMatricula())
                 .monto(factura.getMontoFactura().toString())
                 .saldo(saldoFactura(factura))
                 .anio(String.valueOf(factura.getAnio()))
