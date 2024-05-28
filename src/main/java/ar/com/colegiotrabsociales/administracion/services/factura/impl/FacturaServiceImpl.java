@@ -1,5 +1,7 @@
 package ar.com.colegiotrabsociales.administracion.services.factura.impl;
 
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Convenio;
 import ar.com.colegiotrabsociales.administracion.bootstrap.enums.PagoEstado;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
@@ -7,7 +9,6 @@ import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
 import ar.com.colegiotrabsociales.administracion.mapper.factura.FacturaMapper;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
-import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
 import ar.com.colegiotrabsociales.administracion.repository.factura.FacturaRepository;
 import ar.com.colegiotrabsociales.administracion.repository.matriculado.MatriculadoRepository;
 import ar.com.colegiotrabsociales.administracion.services.factura.FacturaService;
@@ -104,6 +105,24 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+    public List<FacturaDTO> actualizarFacturas(FacturaDTO facturaDTO,
+                                               String categoria,
+                                               String becadoMono,
+                                               Integer anio) {
+        List<FacturaDTO> facturaDTOList = new ArrayList<>();
+        for (Factura factura: facturaRepository.findAll()){
+            if (factura.getMatriculado().getCategoria()==getCategoria(categoria) &&
+            factura.getMatriculado().getBecadoOMonotributista()==getBecadoMonotributista(becadoMono) &&
+                    Objects.equals(factura.getAnio(), anio)){
+                actualizacionFactura(factura, facturaDTO);
+                facturaRepository.saveAndFlush(factura);
+                facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
+            }
+        }
+        return facturaDTOList;
+    }
+
+    @Override
     public boolean borrarFactura(UUID idFactura) {
         if (facturaRepository.existsById(idFactura)){
             facturaRepository.deleteById(idFactura);
@@ -153,6 +172,28 @@ public class FacturaServiceImpl implements FacturaService {
             for (PagoEstado pagoEstado: PagoEstado.values()) {
                 if (pagoEstado.getPagoEstado().equalsIgnoreCase(pagoEstadoString)) {
                     return pagoEstado;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Categoria getCategoria(String categoriaString){
+        if(!categoriaString.isBlank()){
+            for (Categoria categoria: Categoria.values()) {
+                if (categoria.getCategoria().equalsIgnoreCase(categoriaString)) {
+                    return categoria;
+                }
+            }
+        }
+        return null;
+    }
+
+    private BecadoMonotributista getBecadoMonotributista(String becadoMonotributistaString){
+        if(!becadoMonotributistaString.isBlank()){
+            for (BecadoMonotributista becadoMonotributista: BecadoMonotributista.values()) {
+                if (becadoMonotributista.getBecadoMonotributista().equalsIgnoreCase(becadoMonotributistaString)) {
+                    return becadoMonotributista;
                 }
             }
         }

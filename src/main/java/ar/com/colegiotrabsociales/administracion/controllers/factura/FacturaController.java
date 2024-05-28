@@ -69,7 +69,7 @@ public class FacturaController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> crearFacturas(@RequestBody FacturaDTO facturaDTO,
                                              @RequestParam(name = "categoria", required = true) String categoria,
-                                              @RequestParam(name = "becadoMono", required = false) String becadoMono)
+                                              @RequestParam(name = "becadoMono", required = true) String becadoMono)
             throws NotFoundException {
         log.info("Se crea una nueva factura");
 
@@ -100,6 +100,23 @@ public class FacturaController {
             throw new NotFoundException();
         } else {
             log.info("Se actualizo la información dela factura");
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+    }
+
+    @PutMapping("/actualizarFacturas")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> actualizarFacturas(@RequestBody FacturaDTO facturaDTO,
+                                                   @RequestParam(name = "categoria", required = true) String categoria,
+                                                   @RequestParam(name = "becadoMono", required = true) String becadoMono,
+                                                   @RequestParam(name = "anio", required = true) Integer anio)
+            throws NotFoundException {
+        List<FacturaDTO> facturaDTOList = facturaService.actualizarFacturas(facturaDTO, categoria, becadoMono, anio);
+        if (facturaDTOList.isEmpty()){
+            log.info("No se encontraron las facturas");
+            throw new NotFoundException();
+        } else {
+            log.info("Se actualizo la información de las facturas");
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

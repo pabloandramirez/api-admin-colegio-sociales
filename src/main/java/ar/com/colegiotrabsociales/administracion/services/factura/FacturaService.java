@@ -25,6 +25,8 @@ public interface FacturaService {
     //PUT
     Optional<FacturaDTO> actualizarFactura(UUID idFactura, FacturaDTO facturaActualizada);
 
+    List<FacturaDTO> actualizarFacturas(FacturaDTO facturaDTO, String categoria, String becadoMono, Integer anio);
+
     //DELETE
     boolean borrarFactura(UUID idFactura);
 }
