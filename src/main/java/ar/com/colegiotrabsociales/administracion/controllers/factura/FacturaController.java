@@ -53,6 +53,19 @@ public class FacturaController {
         return facturaService.verFacturasPorDNIoNumeroMatricula(dniMatriculado, numeroMatricula, indiceInicio, facturasPorPagina);
     }
 
+    @GetMapping("/getByCategoria")
+    public List<FacturaDTO> getFacturasPorCategoria(@RequestParam(name = "categoria", required = true) String categoria,
+                                                    @RequestParam(name = "becadoMono", required = true) String becadoMono,
+                                                    @RequestParam(name = "anio", required = true) Integer anio) throws NotFoundException {
+        List<FacturaDTO> facturaDTOList = facturaService.verFacturasPorCategoria(categoria, becadoMono, anio);
+        if (facturaDTOList.isEmpty()){
+            log.warn("No se encontro ninguna factura en esta categoria");
+            throw new NotFoundException();
+        } else {
+            return facturaDTOList;
+        }
+    }
+
     //POST
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")

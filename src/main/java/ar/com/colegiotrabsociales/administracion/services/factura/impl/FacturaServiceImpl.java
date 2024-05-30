@@ -94,9 +94,22 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+    public List<FacturaDTO> verFacturasPorCategoria(String categoria, String becadoMonotributista, Integer anio) {
+        List<FacturaDTO> facturaDTOList = new ArrayList<>();
+        for (Factura factura: facturaRepository.findAll()){
+            if (factura.getMatriculado().getCategoria()==getCategoria(categoria) &&
+                    factura.getMatriculado().getBecadoOMonotributista()==getBecadoMonotributista(becadoMonotributista) &&
+                    Objects.equals(factura.getAnio(), anio)){
+                facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
+            }
+        }
+        return facturaDTOList;
+    }
+
+    @Override
     public Optional<FacturaDTO> actualizarFactura(UUID idFactura, FacturaDTO facturaActualizada) {
         Optional<Factura> facturaOptional = facturaRepository.findById(idFactura);
-        if (facturaOptional.isPresent()){
+        if (facturaOptional.isPresent() && !(facturaOptional.get().getPagoEstado()==PagoEstado.PAGADO)){
             actualizacionFactura(facturaOptional.get(), facturaActualizada);
             facturaRepository.saveAndFlush(facturaOptional.get());
             return Optional.of(facturaMapper.facturaToFacturaDTO(facturaOptional.get()));
@@ -113,7 +126,8 @@ public class FacturaServiceImpl implements FacturaService {
         for (Factura factura: facturaRepository.findAll()){
             if (factura.getMatriculado().getCategoria()==getCategoria(categoria) &&
             factura.getMatriculado().getBecadoOMonotributista()==getBecadoMonotributista(becadoMono) &&
-                    Objects.equals(factura.getAnio(), anio)){
+                    Objects.equals(factura.getAnio(), anio) &&
+                    !(factura.getPagoEstado()==PagoEstado.PAGADO)){
                 actualizacionFactura(factura, facturaDTO);
                 facturaRepository.saveAndFlush(factura);
                 facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));

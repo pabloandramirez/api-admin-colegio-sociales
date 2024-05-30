@@ -1,5 +1,7 @@
 package ar.com.colegiotrabsociales.administracion.services.factura;
 
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.BecadoMonotributista;
+import ar.com.colegiotrabsociales.administracion.bootstrap.enums.Categoria;
 import ar.com.colegiotrabsociales.administracion.domain.Cuota;
 import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
@@ -21,6 +23,7 @@ public interface FacturaService {
     //GET
     List<FacturaDTO> verFacturas();
     List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Integer dni, Integer numeroMatricula, Integer pagina, Integer facturasPorPagina);
+    List<FacturaDTO> verFacturasPorCategoria(String categoria, String becadoMonotributista, Integer anio);
 
     //PUT
     Optional<FacturaDTO> actualizarFactura(UUID idFactura, FacturaDTO facturaActualizada);
