@@ -99,7 +99,8 @@ public class FacturaServiceImpl implements FacturaService {
         for (Factura factura: facturaRepository.findAll()){
             if (factura.getMatriculado().getCategoria()==getCategoria(categoria) &&
                     factura.getMatriculado().getBecadoOMonotributista()==getBecadoMonotributista(becadoMonotributista) &&
-                    Objects.equals(factura.getAnio(), anio)){
+                    Objects.equals(factura.getAnio(), anio)&&
+                    !(factura.getPagoEstado()==PagoEstado.PAGADO)){
                 facturaDTOList.add(facturaMapper.facturaToFacturaDTO(factura));
             }
         }

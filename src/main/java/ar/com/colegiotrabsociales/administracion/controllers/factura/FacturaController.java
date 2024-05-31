@@ -54,10 +54,15 @@ public class FacturaController {
     }
 
     @GetMapping("/getByCategoria")
-    public List<FacturaDTO> getFacturasPorCategoria(@RequestParam(name = "categoria", required = true) String categoria,
+    public List<FacturaDTO> getFacturasImpagasPorCategoria(@RequestParam(name = "categoria", required = true) String categoria,
                                                     @RequestParam(name = "becadoMono", required = true) String becadoMono,
-                                                    @RequestParam(name = "anio", required = true) Integer anio) throws NotFoundException {
-        List<FacturaDTO> facturaDTOList = facturaService.verFacturasPorCategoria(categoria, becadoMono, anio);
+                                                    @RequestParam(name = "anio", required = true) String anio) throws NotFoundException {
+        Integer intAnio = null;
+        if (anio!=null && !anio.trim().isBlank()){
+            intAnio = Integer.parseInt(anio.trim());
+        }
+
+        List<FacturaDTO> facturaDTOList = facturaService.verFacturasPorCategoria(categoria, becadoMono, intAnio);
         if (facturaDTOList.isEmpty()){
             log.warn("No se encontro ninguna factura en esta categoria");
             throw new NotFoundException();
@@ -122,9 +127,16 @@ public class FacturaController {
     public ResponseEntity<Void> actualizarFacturas(@RequestBody FacturaDTO facturaDTO,
                                                    @RequestParam(name = "categoria", required = true) String categoria,
                                                    @RequestParam(name = "becadoMono", required = true) String becadoMono,
-                                                   @RequestParam(name = "anio", required = true) Integer anio)
+                                                   @RequestParam(name = "anio", required = true) String anio)
             throws NotFoundException {
-        List<FacturaDTO> facturaDTOList = facturaService.actualizarFacturas(facturaDTO, categoria, becadoMono, anio);
+
+        Integer intAnio = null;
+        if (anio!=null && !anio.trim().isBlank()){
+            intAnio = Integer.parseInt(anio.trim());
+        }
+
+
+        List<FacturaDTO> facturaDTOList = facturaService.actualizarFacturas(facturaDTO, categoria, becadoMono, intAnio);
         if (facturaDTOList.isEmpty()){
             log.info("No se encontraron las facturas");
             throw new NotFoundException();
