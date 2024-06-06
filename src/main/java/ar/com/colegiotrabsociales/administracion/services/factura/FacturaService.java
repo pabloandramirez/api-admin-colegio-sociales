@@ -22,6 +22,8 @@ public interface FacturaService {
 
     //GET
     List<FacturaDTO> verFacturas();
+
+    Optional<FacturaDTO> facturaByUUID(UUID idFactura);
     List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Integer dni, Integer numeroMatricula, Integer pagina, Integer facturasPorPagina);
     List<FacturaDTO> verFacturasPorCategoria(String categoria, String becadoMonotributista, Integer anio);
 

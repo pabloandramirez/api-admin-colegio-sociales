@@ -72,6 +72,15 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+    public Optional<FacturaDTO> facturaByUUID(UUID idFactura) {
+        Optional<Factura> facturaOptional = facturaRepository.findById(idFactura);
+        if (facturaOptional.isPresent()){
+            return Optional.of(facturaMapper.facturaToFacturaDTO(facturaOptional.get()));
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public List<FacturaDTO> verFacturasPorDNIoNumeroMatricula(Integer dni, Integer numeroMatricula, Integer indiceInicio, Integer facturasPorPagina) {
         List<FacturaDTO> facturaDTOList = new ArrayList<>();
         for (Factura factura : facturaRepository.findAll()) {

@@ -4,6 +4,7 @@ import ar.com.colegiotrabsociales.administracion.domain.Factura;
 import ar.com.colegiotrabsociales.administracion.domain.Matriculado;
 import ar.com.colegiotrabsociales.administracion.exceptions.NotFoundException;
 import ar.com.colegiotrabsociales.administracion.model.factura.FacturaDTO;
+import ar.com.colegiotrabsociales.administracion.model.matriculado.MatriculadoDTO;
 import ar.com.colegiotrabsociales.administracion.services.factura.FacturaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,14 @@ public class FacturaController {
 
 
         return facturaService.verFacturasPorDNIoNumeroMatricula(dniMatriculado, numeroMatricula, indiceInicio, facturasPorPagina);
+    }
+
+    @GetMapping("/{idFactura}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public FacturaDTO getFacturaPorId(@PathVariable(value = "idFactura") UUID idFactura)
+            throws NotFoundException {
+        log.info("Muestra la factura mediant UUID");
+        return facturaService.facturaByUUID(idFactura).orElseThrow(NotFoundException::new);
     }
 
     @GetMapping("/getByCategoria")
